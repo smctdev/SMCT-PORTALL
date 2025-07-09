@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  smct-app2:
+    build: .
+    container_name: smct-app2
+    restart: unless-stopped
+    ports:
+      - "1007:1007"
