@@ -500,6 +500,8 @@ export default function LandingPage() {
                       >
                         <a
                           href={app.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="flex items-center justify-between text-white"
                         >
                           <span>Open App</span>
@@ -577,6 +579,8 @@ export default function LandingPage() {
                       >
                         <a
                           href={app.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="flex items-center justify-between text-white"
                         >
                           <span>Open App</span>
@@ -856,6 +860,8 @@ export default function LandingPage() {
               <h4 className="font-bold text-lg mb-2">Facebook page :</h4>
               <a
                 href="https://www.facebook.com/StrongMotoCentrumInc/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="hover:underline font-semibold"
               >
                 STRONG MOTO CENTRUM,INC.
