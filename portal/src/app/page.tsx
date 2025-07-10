@@ -307,9 +307,11 @@ export default function LandingPage() {
               whileHover={{ scale: 1.1 }}
               className="p-2 rounded-lg bg-white/20 hover:bg-white/30 transition-colors cursor-pointer"
             >
+              {/*
               <a href="/global" className="block">
                 <Globe className="w-5 h-5 text-white" />
-              </a>
+              </a> 
+              */}
             </motion.div>
           </div>
         </div>
