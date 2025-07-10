@@ -150,7 +150,7 @@ const apps2 = [
         className="w-25 h-9"
       />
     ),
-    url: "https://inventory.smctgroup.ph/",
+    url: "https://strongmotocentrum.com/",
     category: "STRONG MOTO",
     color: "bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700",
     hoverColor: "bg-blue-500 hover:bg-yellow-400 hover:text-black font-bold",
@@ -169,7 +169,7 @@ const apps2 = [
         className="w-23 h-16"
       />
     ),
-    url: "https://hr.smctgroup.ph/",
+    url: "https://desappliance.com/",
     category: "APPLIANCE",
     color: "bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700",
     hoverColor: "bg-blue-500 hover:bg-yellow-400 hover:text-black font-bold",
@@ -246,6 +246,8 @@ export default function LandingPage() {
   // Unified search and filter state
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  // Modal state for Help icon
+  const [showHelpModal, setShowHelpModal] = useState(false);
 
   // Filter logic for both arrays
   const filterFn = (app: App) => {
@@ -295,10 +297,11 @@ export default function LandingPage() {
             <motion.div
               whileHover={{ scale: 1.1 }}
               className="p-2 rounded-lg bg-white/20 hover:bg-white/30 transition-colors cursor-pointer"
+              onClick={() => setShowHelpModal(true)}
             >
-              <a href="/about" className="block">
+              <span className="block">
                 <HelpCircle className="w-5 h-5 text-white" />
-              </a>
+              </span>
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.1 }}
@@ -974,6 +977,33 @@ export default function LandingPage() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 2.2, duration: 0.6 }}
       ></motion.div>
+      {/* Help Modal */}
+      {showHelpModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-transparent backdrop-blur-sm">
+          <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full relative">
+            <button
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl"
+              onClick={() => setShowHelpModal(false)}
+              aria-label="Close"
+            >
+              &times;
+            </button>
+            <div className="flex justify-center mb-8">
+              <Image
+                src="/smct.png"
+                alt="SMCT Group Logo"
+                width={100}
+                height={100}
+                
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-4 text-blue-600">What is the App Library?</h2>
+            <p className="text-black text-lg font-bold">
+              The App Library is your centralized hub for all SMCT applications and tools. Easily find, search, and access the resources you need to streamline your workflow and empower your team—all in one place!
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
