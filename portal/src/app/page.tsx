@@ -544,7 +544,7 @@ export default function LandingPage() {
     <div className="min-h-screen bg-gray-200 flex flex-col">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-blue-500 shadow-sm">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+        <div className="w-full px-6 py-4 flex justify-between items-center">
           <motion.div
             className="flex items-center space-x-4"
             initial={{ opacity: 0, x: -20 }}
@@ -572,12 +572,14 @@ export default function LandingPage() {
           </motion.div>
 
           {/* Header Icons */}
+          
           <div className="flex items-center space-x-4">
+            
             <motion.div
               whileHover={{ scale: 1.1 }}
-              className="p-2 rounded-lg bg-white/20 hover:bg-white/30 transition-colors cursor-pointer"
               onClick={() => setShowHelpModal(true)}
-            >
+            > 
+            {/*
               <span className="block">
                 <HelpCircle className="w-5 h-5 text-white" />
               </span>
