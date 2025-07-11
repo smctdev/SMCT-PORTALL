@@ -247,9 +247,21 @@ const devs = [
 
 // Add a "Quick Actions" section with frequently used tools
 const quickActions = [
-  { name: "Submit Ticket", icon: <Ticket />, url: "https://ticketing-netsuite.smctgroup.ph/" },
-  { name: "Request Form", icon: <FileQuestion />, url: "https://request.smctgroup.ph/" },
-  { name: "Credit Advice", icon: <DollarSign />, url: "https://credit-advice.smctgroup.ph/" },
+  {
+    name: "Submit Ticket",
+    icon: <Ticket />,
+    url: "https://ticketing-netsuite.smctgroup.ph/",
+  },
+  {
+    name: "Request Form",
+    icon: <FileQuestion />,
+    url: "https://request.smctgroup.ph/",
+  },
+  {
+    name: "Credit Advice",
+    icon: <DollarSign />,
+    url: "https://credit-advice.smctgroup.ph/",
+  },
 ];
 
 // Show recent activities or notifications
@@ -304,7 +316,9 @@ function WeatherWidgetLive() {
         officeCities.map(async (city) => {
           try {
             const res = await fetch(
-              `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city.query)}&appid=${apiKey}&units=metric`
+              `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
+                city.query
+              )}&appid=${apiKey}&units=metric`
             );
             const data = await res.json();
             console.log(city.name, data); // Log the API response
@@ -341,7 +355,12 @@ function WeatherWidgetLive() {
     fetchWeather();
   }, []);
 
-  if (loading) return <div className="bg-white/80 rounded-xl shadow p-4 max-w-xs mx-auto mb-8">Loading weather...</div>;
+  if (loading)
+    return (
+      <div className="bg-white/80 rounded-xl shadow p-4 max-w-xs mx-auto mb-8">
+        Loading weather...
+      </div>
+    );
 
   return (
     <div className="bg-white/80 rounded-xl shadow p-4 flex flex-col gap-2 w-full max-w-xs mx-auto mb-8">
@@ -354,7 +373,9 @@ function WeatherWidgetLive() {
               {w.icon ? (
                 <img src={w.icon} alt={w.condition} className="w-6 h-6" />
               ) : (
-                <span className="w-6 h-6 flex items-center justify-center text-gray-400">?</span>
+                <span className="w-6 h-6 flex items-center justify-center text-gray-400">
+                  ?
+                </span>
               )}
               <span>{w.temp}</span>
               <span className="text-gray-500 text-sm">{w.condition}</span>
@@ -368,8 +389,16 @@ function WeatherWidgetLive() {
 
 // Company announcements
 const announcements = [
-  { title: "System Maintenance", content: "Scheduled maintenance on Sunday", priority: "info" },
-  { title: "New Feature", content: "Credit advice system updated", priority: "success" },
+  {
+    title: "System Maintenance",
+    content: "Scheduled maintenance on Sunday",
+    priority: "info",
+  },
+  {
+    title: "New Feature",
+    content: "Credit advice system updated",
+    priority: "success",
+  },
 ];
 
 // User-specific information
@@ -378,7 +407,7 @@ const userProfile = {
   department: "IT",
   role: "Developer",
   lastLogin: "2 hours ago",
-  permissions: ["admin", "ticket_management"]
+  permissions: ["admin", "ticket_management"],
 };
 
 // Real-time system status
@@ -390,9 +419,107 @@ const systemStatus = [
 
 // Emergency contacts
 const emergencyContacts = [
-  { name: "IT Support", phone: "+63 970 192 9564", email: "support@smctgroup.ph" },
-  { name: "HR Department", phone: "+63 XXX XXX XXXX", email: "hr@smctgroup.ph" },
+  {
+    name: "IT Support",
+    phone: "+63 970 192 9564",
+    email: "support@smctgroup.ph",
+  },
+  {
+    name: "HR Department",
+    phone: "+63 XXX XXX XXXX",
+    email: "hr@smctgroup.ph",
+  },
 ];
+
+// Live Date and Time Display for Header
+function DateTimeDisplay() {
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Use Asia/Manila timezone for Philippine Standard Time
+  const day = now.toLocaleDateString('en-PH', {
+    weekday: 'long',
+    timeZone: 'Asia/Manila',
+  });
+  const date = now.toLocaleDateString('en-PH', {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "Asia/Manila",
+  });
+  const time = now.toLocaleTimeString('en-PH', {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Manila",
+  });
+
+  return (
+    <div className="flex flex-col items-end ml-4">
+      <span className="font-bold tracking-wide text-blue-100 text-xs sm:text-sm mb-1">Philippine Standard Time</span>
+      <span className="font-bold text-white text-sm sm:text-base leading-tight">{day}</span>
+      <span className="text-blue-200 text-xs sm:text-sm font-bold mb-1">{date}</span>
+      
+    </div>
+  );
+}
+
+// Live Tagbilaran Weather for Header
+function TagbilaranWeather() {
+  const [weather, setWeather] = useState<{ temp: string; condition: string; icon: string } | null>(null);
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    async function fetchWeather() {
+      const apiKey = "6832420060375fa1f473c4bee1266976"; // <-- Use your real OpenWeatherMap API key
+      const res = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=Tagbilaran,PH&appid=${apiKey}&units=metric`
+      );
+      const data = await res.json();
+      if (res.ok && data.main && data.weather) {
+        setWeather({
+          temp: Math.round(data.main.temp) + "°C",
+          condition: data.weather[0].main,
+          icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`,
+        });
+      } else {
+        setWeather(null);
+      }
+    }
+    fetchWeather();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Philippine Standard Time
+  const time = now.toLocaleTimeString('en-PH', {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Manila",
+  });
+
+  if (!weather) return <div className="text-white text-[10px] ml-1">N/A</div>;
+
+  return (
+    <div className="flex flex-col items-start ml-1 text-white text-[15px] font-mono leading-tight">
+      <div className="flex items-center">
+        <img src={weather.icon} alt={weather.condition} className="w-7 h-7 mr-1" />
+        <span className="truncate">TAG City: {weather.temp}, {weather.condition}</span>
+      </div>
+      <span className="block w-33 text-[20px] text-blue-100 bg-blue-800 rounded-2xl mt-1 text-center">{time}</span>
+    </div>
+  );
+}
 
 export default function LandingPage() {
   // Unified search and filter state
@@ -457,7 +584,8 @@ export default function LandingPage() {
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.1 }}
-              className="p-2 rounded-lg bg-white/20 hover:bg-white/30 transition-colors cursor-pointer"
+              
+              className="p-0 rounded-lg bg-white/24 hover:bg-white/30 transition-colors cursor-pointer"
             >
               {/*
               <a href="/global" className="block">
@@ -465,6 +593,8 @@ export default function LandingPage() {
               </a> 
               */}
             </motion.div>
+            <DateTimeDisplay />
+            <TagbilaranWeather />
           </div>
         </div>
       </header>
@@ -473,7 +603,7 @@ export default function LandingPage() {
       <main className="flex-1 flex flex-col justify-center items-center text-center px-6 py-20 relative">
         {/* Weather widget absolutely positioned in the top right of hero */}
         <div className="absolute top-0 right-0 z-20">
-          <WeatherWidgetLive />
+     
         </div>
         {/* Background Image for Hero Section */}
         <div
@@ -547,9 +677,7 @@ export default function LandingPage() {
       <section className="py-20 bg-white backdrop-blur-md">
         <div className="container px-6 mx-auto relative">
           {/* Weather widget absolutely positioned in the top right of Applications Hub */}
-          <div className="absolute top-0 right-0 z-20">
-           
-          </div>
+          <div className="absolute top-0 right-0 z-20"></div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -583,7 +711,9 @@ export default function LandingPage() {
                   placeholder="Search all apps..."
                   className="pl-12 w-full rounded-xl border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-12 text-lg"
                   value={search}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setSearch(e.target.value)
+                  }
                 />
               </div>
               <div className="flex flex-wrap gap-3 justify-center lg:justify-end">
@@ -1102,7 +1232,9 @@ export default function LandingPage() {
                           {dev.avatar ? (
                             <AvatarImage src={dev.avatar} alt={dev.name} />
                           ) : (
-                            <AvatarFallback>{dev.name.charAt(4)}</AvatarFallback>
+                            <AvatarFallback>
+                              {dev.name.charAt(4)}
+                            </AvatarFallback>
                           )}
                         </Avatar>
                       </div>
@@ -1119,9 +1251,7 @@ export default function LandingPage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="group cursor-pointer hidden sm:flex"
-              >
-               
-              </motion.div>
+              ></motion.div>
             </div>
           </div>
 
@@ -1164,12 +1294,16 @@ export default function LandingPage() {
                 alt="SMCT Group Logo"
                 width={100}
                 height={100}
-                
               />
             </div>
-            <h2 className="text-2xl font-bold mb-4 text-blue-600">What is the App Library?</h2>
+            <h2 className="text-2xl font-bold mb-4 text-blue-600">
+              What is the App Library?
+            </h2>
             <p className="text-black text-lg font-bold">
-              The App Library is your centralized hub for all SMCT applications and tools. Easily find, search, and access the resources you need to streamline your workflow and empower your team—all in one place!
+              The App Library is your centralized hub for all SMCT applications
+              and tools. Easily find, search, and access the resources you need
+              to streamline your workflow and empower your team—all in one
+              place!
             </p>
           </div>
         </div>
