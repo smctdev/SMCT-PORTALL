@@ -30,7 +30,8 @@ import {
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 
-import { SiGmail, SiFacebook } from "react-icons/si";
+import { SiFacebook } from "react-icons/si";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 type App = {
   id: number;
@@ -222,23 +223,23 @@ const allCategories = [
 const devs = [
   {
     name: "Dev_allan",
-    email: "allanjustinemascarinas.smct@gmail.com",
-    icon: <SiGmail className="w-6 h-6 text-white" />,
+    link: "https://chat.smctgroup.ph/direct/9rSGAuSQvW7LY7uxQk87qvZewTK4mnjHah",
+    avatar: "/avatars/lan.jpg",
   },
   {
     name: "Dev_jenecil",
-    email: "smctjen@gmail.com",
-    icon: <SiGmail className="w-6 h-6 text-white" />,
+    link: "https://chat.smctgroup.ph/direct/gR7v7bvZDtwJLZudtk87qvZewTK4mnjHah",
+    avatar: "/avatars/jen.jpg",
   },
   {
     name: "Dev_Macmac",
-    email: "smct.markanthonybulala@gmail.com",
-    icon: <SiGmail className="w-6 h-6 text-white" />,
+    link: "https://chat.smctgroup.ph/direct/QftTyPFraEgBtS8u9k87qvZewTK4mnjHah",
+    avatar: "/avatars/mac.png",
   },
   {
     name: "Dev_zart",
-    email: "smct.zart@gmail.com",
-    icon: <SiGmail className="w-6 h-6 text-white" />,
+    link: "https://chat.smctgroup.ph/direct/680b3464256a574a99fd410a",
+    avatar: "/avatars/zart.jpg",
   },
 ];
 
@@ -923,20 +924,28 @@ export default function LandingPage() {
                   <span className="block w-75 h-1 bg-gradient-to-r from-yellow-400 to-yellow-700 rounded-full opacity-60"></span>
                 </div>
               </div>
-              <div className="flex flex-row flex-wrap gap-4 justify-center sm:justify-start w-full mb-2">
+              <div className="flex flex-row flex-wrap gap-3 justify-center sm:justify-start w-full mb-1">
                 {devs.map((dev) => (
                   <motion.div
-                    key={dev.email}
+                    key={dev.link}
                     whileHover={{ scale: 1.08 }}
                     whileTap={{ scale: 0.97 }}
                     className="group cursor-pointer flex flex-col items-center"
                   >
                     <a
-                      href={`mailto:${dev.email}`}
+                      href={dev.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex flex-col items-center space-y-1 transition-all duration-300"
                     >
-                      <div className="bg-white/20 p-1.5 rounded-full group-hover:bg-blue-500/80 transition-colors duration-300 shadow-md">
-                        {dev.icon}
+                      <div className="bg-white/20 p-1 rounded-full group-hover:bg-blue-500/80 transition-colors duration-300 shadow-md">
+                        <Avatar>
+                          {dev.avatar ? (
+                            <AvatarImage src={dev.avatar} alt={dev.name} />
+                          ) : (
+                            <AvatarFallback>{dev.name.charAt(4)}</AvatarFallback>
+                          )}
+                        </Avatar>
                       </div>
                       <span className="text-white font-medium text-sm group-hover:text-blue-200 transition-colors duration-200">
                         {dev.name}
