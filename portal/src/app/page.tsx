@@ -26,9 +26,11 @@ import {
   Globe,
   Target,
   GithubIcon,
+  FileText,
+  LifeBuoy,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { SiFacebook } from "react-icons/si";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -243,6 +245,155 @@ const devs = [
   },
 ];
 
+// Add a "Quick Actions" section with frequently used tools
+const quickActions = [
+  { name: "Submit Ticket", icon: <Ticket />, url: "https://ticketing-netsuite.smctgroup.ph/" },
+  { name: "Request Form", icon: <FileQuestion />, url: "https://request.smctgroup.ph/" },
+  { name: "Credit Advice", icon: <DollarSign />, url: "https://credit-advice.smctgroup.ph/" },
+];
+
+// Show recent activities or notifications
+const recentActivities = [
+  { type: "ticket", message: "New ticket #1234 assigned", time: "2 hours ago" },
+  { type: "request", message: "Request approved", time: "1 day ago" },
+];
+
+// Add key metrics
+const stats = [
+  { label: "Active Tickets", value: "24", trend: "+12%" },
+  { label: "Pending Requests", value: "8", trend: "-5%" },
+  { label: "System Status", value: "All Systems Operational", status: "green" },
+];
+
+// Popular searches
+const popularSearches = [
+  "ticket submission",
+  "credit advance",
+  "computer monitoring",
+  "job order",
+];
+
+// External resources
+const quickLinks = [
+  { name: "SMCT Website", url: "https://smctgroup.ph/", icon: <Globe /> },
+  { name: "Employee Handbook", url: "#", icon: <FileText /> },
+  { name: "IT Support", url: "#", icon: <LifeBuoy /> },
+];
+
+type Weather = {
+  location: string;
+  temp: string;
+  condition: string;
+  icon: string;
+};
+
+const officeCities = [
+  { name: "Tagbilaran", query: "Tagbilaran,PH" },
+  { name: "Cebu", query: "Cebu,PH" },
+  { name: "Davao", query: "Davao,PH" },
+];
+
+function WeatherWidgetLive() {
+  const [weather, setWeather] = useState<Weather[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchWeather() {
+      const apiKey = "6832420060375fa1f473c4bee1266976";
+      const results: Weather[] = await Promise.all(
+        officeCities.map(async (city) => {
+          try {
+            const res = await fetch(
+              `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city.query)}&appid=${apiKey}&units=metric`
+            );
+            const data = await res.json();
+            console.log(city.name, data); // Log the API response
+
+            if (!res.ok || !data.main || !data.weather) {
+              return {
+                location: city.name,
+                temp: "N/A",
+                condition: data.message || "Unavailable",
+                icon: "",
+              };
+            }
+
+            return {
+              location: city.name,
+              temp: Math.round(data.main.temp) + "°C",
+              condition: data.weather[0].main,
+              icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`,
+            };
+          } catch (error) {
+            console.error("Weather fetch error for", city.name, error);
+            return {
+              location: city.name,
+              temp: "N/A",
+              condition: "Fetch error",
+              icon: "",
+            };
+          }
+        })
+      );
+      setWeather(results);
+      setLoading(false);
+    }
+    fetchWeather();
+  }, []);
+
+  if (loading) return <div className="bg-white/80 rounded-xl shadow p-4 max-w-xs mx-auto mb-8">Loading weather...</div>;
+
+  return (
+    <div className="bg-white/80 rounded-xl shadow p-4 flex flex-col gap-2 w-full max-w-xs mx-auto mb-8">
+      <h3 className="text-lg font-bold text-blue-700 mb-2">Office Weather</h3>
+      <div className="flex flex-col gap-2">
+        {weather.map((w) => (
+          <div key={w.location} className="flex items-center justify-between">
+            <span className="font-semibold">{w.location}</span>
+            <span className="flex items-center gap-2">
+              {w.icon ? (
+                <img src={w.icon} alt={w.condition} className="w-6 h-6" />
+              ) : (
+                <span className="w-6 h-6 flex items-center justify-center text-gray-400">?</span>
+              )}
+              <span>{w.temp}</span>
+              <span className="text-gray-500 text-sm">{w.condition}</span>
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Company announcements
+const announcements = [
+  { title: "System Maintenance", content: "Scheduled maintenance on Sunday", priority: "info" },
+  { title: "New Feature", content: "Credit advice system updated", priority: "success" },
+];
+
+// User-specific information
+const userProfile = {
+  name: "John Doe",
+  department: "IT",
+  role: "Developer",
+  lastLogin: "2 hours ago",
+  permissions: ["admin", "ticket_management"]
+};
+
+// Real-time system status
+const systemStatus = [
+  { service: "SMCT CHAT", status: "online", uptime: "99.9%" },
+  { service: "TICKETING SQL", status: "online", uptime: "99.8%" },
+  { service: "COMPUTER MONITORING", status: "maintenance", uptime: "95.2%" },
+];
+
+// Emergency contacts
+const emergencyContacts = [
+  { name: "IT Support", phone: "+63 970 192 9564", email: "support@smctgroup.ph" },
+  { name: "HR Department", phone: "+63 XXX XXX XXXX", email: "hr@smctgroup.ph" },
+];
+
 export default function LandingPage() {
   // Unified search and filter state
   const [search, setSearch] = useState("");
@@ -320,6 +471,10 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <main className="flex-1 flex flex-col justify-center items-center text-center px-6 py-20 relative">
+        {/* Weather widget absolutely positioned in the top right of hero */}
+        <div className="absolute top-0 right-0 z-20">
+          <WeatherWidgetLive />
+        </div>
         {/* Background Image for Hero Section */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -390,7 +545,11 @@ export default function LandingPage() {
 
       {/* Company Applications Hub */}
       <section className="py-20 bg-white backdrop-blur-md">
-        <div className="container px-6 mx-auto">
+        <div className="container px-6 mx-auto relative">
+          {/* Weather widget absolutely positioned in the top right of Applications Hub */}
+          <div className="absolute top-0 right-0 z-20">
+           
+          </div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -914,14 +1073,14 @@ export default function LandingPage() {
               <div className="w-full flex flex-col items-center sm:items-start mb-4">
                 <div className="w-full flex items-center justify-center sm:justify-start mb-2">
                   <span className="text-white font-bold text-xl tracking-wide">
-                    Made with ꨄ︎ by:
+                    Made with ♥️ by:
                   </span>
                   <span className="ml-2 px-3 py-1 rounded-full bg-gradient-to-r from-yellow-300 to-yellow-500 text-black font-semibold shadow-md">
                     SMCT Dev Team
                   </span>
                 </div>
                 <div className="w-full flex items-center justify-center sm:justify-start">
-                  <span className="block w-75 h-1 bg-gradient-to-r from-yellow-400 to-yellow-700 rounded-full opacity-60"></span>
+                  <span className="block w-82 h-1 bg-gradient-to-r from-yellow-400 to-yellow-700 rounded-full opacity-60"></span>
                 </div>
               </div>
               <div className="flex flex-row flex-wrap gap-3 justify-center sm:justify-start w-full mb-1">
