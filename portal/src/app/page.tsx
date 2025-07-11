@@ -223,22 +223,22 @@ const allCategories = [
 const devs = [
   {
     name: "Dev_allan",
-    link: "https://chat.smctgroup.ph/direct/9rSGAuSQvW7LY7uxQk87qvZewTK4mnjHah",
+    link: "https://chat.smctgroup.ph/direct/Dev_Allan-j",
     avatar: "/avatars/lan.jpg",
   },
   {
     name: "Dev_jenecil",
-    link: "https://chat.smctgroup.ph/direct/gR7v7bvZDtwJLZudtk87qvZewTK4mnjHah",
+    link: "https://chat.smctgroup.ph/direct/dev_jenecil",
     avatar: "/avatars/jen.jpg",
   },
   {
     name: "Dev_Macmac",
-    link: "https://chat.smctgroup.ph/direct/QftTyPFraEgBtS8u9k87qvZewTK4mnjHah",
+    link: "https://chat.smctgroup.ph/direct/Dev_Macmac",
     avatar: "/avatars/mac.png",
   },
   {
     name: "Dev_zart",
-    link: "https://chat.smctgroup.ph/direct/680b3464256a574a99fd410a",
+    link: "https://chat.smctgroup.ph/direct/dev_zart",
     avatar: "/avatars/zart.jpg",
   },
 ];
