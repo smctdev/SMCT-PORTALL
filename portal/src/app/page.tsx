@@ -215,81 +215,40 @@ const apps2 = [
     color: "bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700",
     hoverColor: "bg-blue-500 hover:bg-yellow-500 hover:text-black font-bold",
   },
+];
+
+const featuredArticles = [
   {
     id: 13,
     name: "STRONG MOTO CENTRUM",
-    description:
-      "FEATURED ARTICLES",
-    icon: (
-      <Image
-        src="/smct.png"
-        alt="STRONG MOTO CENTRUM Icon"
-        width={300}
-        height={300}
-        className="w-25 h-9"
-      />
-    ),
+    excerpt: "The air hummed with a sense of anticipation as STRONG MOTO CENTRUM, INC. Biñan had its store blessing ceremony last September 25, 2024 at National Highway",
+    image: "/art1.png",
     url: "https://strongmotocentrum.com/strongmotocentrum-binan-motorcycle/",
     category: "STRONG MOTO",
-    color: "bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700",
-    hoverColor: "bg-blue-500 hover:bg-yellow-400 hover:text-black font-bold",
   },
   {
     id: 14,
     name: "DES APPLIANCE",
-    description:
-      "FEATURED ARTICLES",
-    icon: (
-      <Image
-        src="/Da.png"
-        alt="DES APPLIANCE Icon"
-        width={500}
-        height={500}
-        className="w-23 h-16"
-      />
-    ),
+    excerpt: "Last July 23, 2024, DES APPLIANCE PLAZA, INC. in partnership with Panasonic Philippines hosted its highly anticipated Panasonic Range Review held at Marco Polo Hotel Ortigas.",
+    image: "/art2.jpg",
     url: "https://desappliance.com/article-panasonic-range-review/",
     category: "APPLIANCE",
-    color: "bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700",
-    hoverColor: "bg-blue-500 hover:bg-yellow-400 hover:text-black font-bold",
   },
   {
     id: 15,
     name: "DES STRONG",
-    description:
-      "FEATURED ARTICLES",
-    icon: (
-      <Image
-        src="/Ds.png"
-        alt="DES STRONG Icon"
-        width={400}
-        height={400}
-        className="w-25 h-16"
-      />
-    ),
+    excerpt: "DES STRONG MOTORS INC. Bajaj Cerilles Grand Opening last February 24, 2024 at Gov. Vicente Cerilles Street, Pagadian City.",
+    image: "/art3.png",
     url: "https://desstrongmotors.com/article-bajaj-cerilles-three-wheelers/",
     category: "STRONG",
-    color: "bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700",
-    hoverColor: "bg-blue-500 hover:bg-yellow-400 hover:text-black font-bold",
   },
   {
     id: 16,
     name: "HONDA DES",
-    description:
-      "FEATURED ARTICLES",
-    icon: (
-      <Image
-        src="/Hon.jpg"
-        alt="HONDA DES Icon"
-        width={400}
-        height={400}
-        className="w-20 h-15 rounded-4xl"
-      />
-    ),
+    excerpt: "The HONDA DES, INC. Camino Flagship actively joined the highly anticipated Zamboanga Hermosa Festival Parade of Lights which took place last October 1, 2024. This festival is a celebration of Zamboanga City’s rich cultural heritage and vibrant spirit.",
+    image: "/art4.png",
     url: "https://hondades.com/honda-des-celebrates-hermosa-festival-with-style/",
     category: "HONDA DES",
-    color: "bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700",
-    hoverColor: "bg-blue-500 hover:bg-yellow-500 hover:text-black font-bold",
   },
 ];
 
@@ -966,6 +925,68 @@ export default function LandingPage() {
               ))
             )}
           </motion.div>
+        </div>
+      </section>
+
+      {/* Featured Articles Section */}
+      <section className="py-20 bg-white">
+        <div className="container px-6 mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <span className="inline-block px-4 py-1 bg-blue-200 text-blue-800 rounded-full font-semibold text-xs mb-3 tracking-widest shadow-sm">FEATURED</span>
+            <h1 className="text-4xl font-extrabold text-blue-900 mb-2 drop-shadow">Featured Articles</h1>
+            <p className="text-lg text-blue-700 max-w-2xl mx-auto font-medium">Get inspired by our latest stories, insights, and highlights from the world of SMCT and its partners.</p>
+          </motion.div>
+          <div className="flex flex-col gap-10">
+            {featuredArticles.length === 0 ? (
+              <div className="col-span-full text-center text-black text-lg py-8">
+                No featured articles found.
+              </div>
+            ) : (
+              featuredArticles.map((article, index) => (
+                <motion.div
+                  key={article.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.6 + index * 0.1, duration: 0.4 }}
+                  whileHover={{ y: -4, scale: 1.01 }}
+                  className="group"
+                >
+                  <div className="flex flex-col md:flex-row bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border border-blue-100 group-hover:bg-blue-50">
+                    <div className="md:w-1/3 flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-200 p-6 md:p-0">
+                      <img
+                        src={article.image}
+                        alt={article.name}
+                        className="object-contain w-40 h-40 md:w-56 md:h-56 rounded-2xl shadow-md border border-blue-200"
+                      />
+                    </div>
+                    <div className="flex-1 p-6 flex flex-col justify-between">
+                      <div>
+                        <span className="inline-block px-3 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold mb-2">{article.category}</span>
+                        <h2 className="text-2xl font-bold text-blue-900 mb-2 group-hover:text-blue-700 transition-colors">{article.name}</h2>
+                        <p className="text-base text-gray-700 mb-4 font-medium">{article.excerpt}</p>
+                      </div>
+                      <div>
+                        <a
+                          href={article.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full shadow-md transition-all duration-200 text-lg group-hover:scale-105"
+                        >
+                          Read Article
+                          <ChevronRight className="ml-2 h-5 w-5" />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))
+            )}
+          </div>
         </div>
       </section>
 
