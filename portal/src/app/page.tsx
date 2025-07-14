@@ -215,6 +215,82 @@ const apps2 = [
     color: "bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700",
     hoverColor: "bg-blue-500 hover:bg-yellow-500 hover:text-black font-bold",
   },
+  {
+    id: 13,
+    name: "STRONG MOTO CENTRUM",
+    description:
+      "FEATURED ARTICLES",
+    icon: (
+      <Image
+        src="/smct.png"
+        alt="STRONG MOTO CENTRUM Icon"
+        width={300}
+        height={300}
+        className="w-25 h-9"
+      />
+    ),
+    url: "https://strongmotocentrum.com/strongmotocentrum-binan-motorcycle/",
+    category: "STRONG MOTO",
+    color: "bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700",
+    hoverColor: "bg-blue-500 hover:bg-yellow-400 hover:text-black font-bold",
+  },
+  {
+    id: 14,
+    name: "DES APPLIANCE",
+    description:
+      "FEATURED ARTICLES",
+    icon: (
+      <Image
+        src="/Da.png"
+        alt="DES APPLIANCE Icon"
+        width={500}
+        height={500}
+        className="w-23 h-16"
+      />
+    ),
+    url: "https://desappliance.com/article-panasonic-range-review/",
+    category: "APPLIANCE",
+    color: "bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700",
+    hoverColor: "bg-blue-500 hover:bg-yellow-400 hover:text-black font-bold",
+  },
+  {
+    id: 15,
+    name: "DES STRONG",
+    description:
+      "FEATURED ARTICLES",
+    icon: (
+      <Image
+        src="/Ds.png"
+        alt="DES STRONG Icon"
+        width={400}
+        height={400}
+        className="w-25 h-16"
+      />
+    ),
+    url: "https://desstrongmotors.com/article-bajaj-cerilles-three-wheelers/",
+    category: "STRONG",
+    color: "bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700",
+    hoverColor: "bg-blue-500 hover:bg-yellow-400 hover:text-black font-bold",
+  },
+  {
+    id: 16,
+    name: "HONDA DES",
+    description:
+      "FEATURED ARTICLES",
+    icon: (
+      <Image
+        src="/Hon.jpg"
+        alt="HONDA DES Icon"
+        width={400}
+        height={400}
+        className="w-20 h-15 rounded-4xl"
+      />
+    ),
+    url: "https://hondades.com/honda-des-celebrates-hermosa-festival-with-style/",
+    category: "HONDA DES",
+    color: "bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700",
+    hoverColor: "bg-blue-500 hover:bg-yellow-500 hover:text-black font-bold",
+  },
 ];
 
 const allCategories = [
