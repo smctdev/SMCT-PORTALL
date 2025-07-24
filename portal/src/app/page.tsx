@@ -557,6 +557,51 @@ function TagbilaranWeather() {
 }
 
 export default function LandingPage() {
+  // Feedback modal state and handlers (moved inside component)
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [feedbackText, setFeedbackText] = useState("");
+  const [feedbackEmail, setFeedbackEmail] = useState("");
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [feedbackLoading, setFeedbackLoading] = useState(false);
+  const [feedbackError, setFeedbackError] = useState("");
+  const maxFeedbackLength = 500;
+
+  async function handleFeedbackSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setFeedbackLoading(true);
+    setFeedbackError("");
+    try {
+      const payload = {
+        data: [
+          {
+            timestamp: new Date().toISOString(),
+            feedback: feedbackText,
+            email: feedbackEmail,
+          }
+        ]
+      };
+      const res = await fetch('https://sheetdb.io/api/v1/ags2gxrfy1pqi', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        throw new Error('Failed to send feedback. Please try again.');
+      }
+      setFeedbackSubmitted(true);
+      setFeedbackText('');
+      setFeedbackEmail('');
+      setTimeout(() => {
+        setShowFeedbackModal(false);
+        setFeedbackSubmitted(false);
+      }, 2000);
+    } catch (err: any) {
+      setFeedbackError(err.message || 'An error occurred. Please try again.');
+    } finally {
+      setFeedbackLoading(false);
+    }
+  }
+
   // Unified search and filter state
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -1404,6 +1449,106 @@ export default function LandingPage() {
               to streamline your workflow and empower your team—all in one
               place!
             </p>
+          </div>
+        </div>
+      )}
+      {/* Feedback Button */}
+      <div className="fixed bottom-6 right-6 z-50 group">
+        <button
+          className="bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white rounded-full p-4 shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-200 transform hover:scale-110 active:scale-95 group"
+          onClick={() => setShowFeedbackModal(true)}
+          aria-label="Send Feedback"
+          type="button"
+        >
+          <span className="sr-only bg-white">Send Feedback</span>
+          {/* Chat bubble icon */}
+          <svg className="w-7 h-7 group-hover:animate-bounce" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8l-4.28 1.07A1 1 0 013 19.13l1.07-4.28A8.96 8.96 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+        </button>
+        {/* Tooltip */}
+        <div className="absolute bottom-16 right-0 mb-2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200">
+          <span className="bg-gray-900 text-white text-xs rounded px-3 py-1 shadow-lg">Send Feedback</span>
+        </div>
+      </div>
+      {/* Feedback Modal */}
+      {showFeedbackModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="bg-gradient-to-br from-blue-50 via-white to-blue-100 rounded-2xl shadow-2xl p-0 max-w-md w-full relative overflow-hidden">
+            {/* Modal Header */}
+            <div className="flex items-center gap-3 px-8 pt-8 pb-4 border-b border-blue-100">
+              <div className="bg-blue-600 rounded-full p-2 flex items-center justify-center">
+                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8l-4.28 1.07A1 1 0 013 19.13l1.07-4.28A8.96 8.96 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-blue-700">Send Feedback</h2>
+                <p className="text-xs text-blue-500 font-medium">We value your feedback! Let us know how we can improve.</p>
+              </div>
+              <button
+                className="absolute top-3 right-4 text-gray-400 hover:text-blue-700 text-2xl font-bold focus:outline-none"
+                onClick={() => setShowFeedbackModal(false)}
+                aria-label="Close"
+                type="button"
+              >
+                &times;
+              </button>
+            </div>
+            <div className="px-8 py-6">
+              {feedbackSubmitted ? (
+                <div className="flex flex-col items-center justify-center py-8">
+                  {/* Animated checkmark */}
+                  <svg className="w-16 h-16 text-green-500 mb-4 animate-bounce" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <div className="text-green-700 font-bold text-lg text-center">Thank you for your feedback!</div>
+                </div>
+              ) : (
+                <form onSubmit={handleFeedbackSubmit} className="flex flex-col gap-5">
+                  <div>
+                    <textarea
+                      required
+                      maxLength={maxFeedbackLength}
+                      className="border-2 border-blue-200 rounded-xl p-3 w-full min-h-[90px] text-base focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all resize-none shadow-sm"
+                      placeholder="Your feedback..."
+                      value={feedbackText}
+                      onChange={e => setFeedbackText(e.target.value)}
+                      aria-label="Your feedback"
+                      disabled={feedbackLoading}
+                    />
+                    <div className="flex justify-end text-xs text-blue-400 mt-1">
+                      {feedbackText.length}/{maxFeedbackLength}
+                    </div>
+                  </div>
+                  <input
+                    type="email"
+                    className="border-2 border-blue-200 rounded-xl p-3 w-full text-base focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all shadow-sm"
+                    placeholder="Your email (optional)"
+                    value={feedbackEmail}
+                    onChange={e => setFeedbackEmail(e.target.value)}
+                    aria-label="Your email (optional)"
+                    disabled={feedbackLoading}
+                  />
+                  {feedbackError && (
+                    <div className="text-red-600 text-sm font-semibold text-center mb-2">{feedbackError}</div>
+                  )}
+                  <button
+                    type="submit"
+                    className="bg-gradient-to-r from-blue-600 to-blue-400 text-white rounded-xl px-6 py-3 font-bold shadow-md hover:from-blue-700 hover:to-blue-500 transition-all text-lg focus:outline-none focus:ring-2 focus:ring-blue-400 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                    disabled={feedbackLoading}
+                  >
+                    {feedbackLoading && (
+                      <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                      </svg>
+                    )}
+                    {feedbackLoading ? 'Sending...' : 'Submit Feedback'}
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
         </div>
       )}
