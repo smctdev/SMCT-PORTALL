@@ -221,7 +221,8 @@ const featuredArticles = [
   {
     id: 13,
     name: "STRONG MOTO CENTRUM",
-    excerpt: "The air hummed with a sense of anticipation as STRONG MOTO CENTRUM, INC. Biñan had its store blessing ceremony last September 25, 2024 at National Highway",
+    excerpt:
+      "The air hummed with a sense of anticipation as STRONG MOTO CENTRUM, INC. Biñan had its store blessing ceremony last September 25, 2024 at National Highway",
     image: "/art1.png",
     url: "https://strongmotocentrum.com/strongmotocentrum-binan-motorcycle/",
     category: "STRONG MOTO",
@@ -229,7 +230,8 @@ const featuredArticles = [
   {
     id: 14,
     name: "DES APPLIANCE",
-    excerpt: "Last July 23, 2024, DES APPLIANCE PLAZA, INC. in partnership with Panasonic Philippines hosted its highly anticipated Panasonic Range Review held at Marco Polo Hotel Ortigas.",
+    excerpt:
+      "Last July 23, 2024, DES APPLIANCE PLAZA, INC. in partnership with Panasonic Philippines hosted its highly anticipated Panasonic Range Review held at Marco Polo Hotel Ortigas.",
     image: "/art2.jpg",
     url: "https://desappliance.com/article-panasonic-range-review/",
     category: "APPLIANCE",
@@ -237,7 +239,8 @@ const featuredArticles = [
   {
     id: 15,
     name: "DES STRONG",
-    excerpt: "DES STRONG MOTORS INC. Bajaj Cerilles Grand Opening last February 24, 2024 at Gov. Vicente Cerilles Street, Pagadian City.",
+    excerpt:
+      "DES STRONG MOTORS INC. Bajaj Cerilles Grand Opening last February 24, 2024 at Gov. Vicente Cerilles Street, Pagadian City.",
     image: "/art3.png",
     url: "https://desstrongmotors.com/article-bajaj-cerilles-three-wheelers/",
     category: "STRONG",
@@ -245,7 +248,8 @@ const featuredArticles = [
   {
     id: 16,
     name: "HONDA DES",
-    excerpt: "The HONDA DES, INC. Camino Flagship actively joined the highly anticipated Zamboanga Hermosa Festival Parade of Lights which took place last October 1, 2024. This festival is a celebration of Zamboanga City’s rich cultural heritage and vibrant spirit.",
+    excerpt:
+      "The HONDA DES, INC. Camino Flagship actively joined the highly anticipated Zamboanga Hermosa Festival Parade of Lights which took place last October 1, 2024. This festival is a celebration of Zamboanga City’s rich cultural heritage and vibrant spirit.",
     image: "/art4.png",
     url: "https://hondades.com/honda-des-celebrates-hermosa-festival-with-style/",
     category: "HONDA DES",
@@ -476,17 +480,17 @@ function DateTimeDisplay() {
   }, []);
 
   // Use Asia/Manila timezone for Philippine Standard Time
-  const day = now.toLocaleDateString('en-PH', {
-    weekday: 'long',
-    timeZone: 'Asia/Manila',
+  const day = now.toLocaleDateString("en-PH", {
+    weekday: "long",
+    timeZone: "Asia/Manila",
   });
-  const date = now.toLocaleDateString('en-PH', {
+  const date = now.toLocaleDateString("en-PH", {
     year: "numeric",
     month: "long",
     day: "numeric",
     timeZone: "Asia/Manila",
   });
-  const time = now.toLocaleTimeString('en-PH', {
+  const time = now.toLocaleTimeString("en-PH", {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
@@ -496,17 +500,26 @@ function DateTimeDisplay() {
 
   return (
     <div className="flex flex-col items-end ml-4">
-      <span className="font-bold tracking-wide text-blue-100 text-xs sm:text-sm mb-1">Philippine Standard Time</span>
-      <span className="font-bold text-white text-sm sm:text-base leading-tight">{day}</span>
-      <span className="text-blue-200 text-xs sm:text-sm font-bold mb-1">{date}</span>
-      
+      <span className="font-bold tracking-wide text-blue-100 text-xs sm:text-sm mb-1">
+        Philippine Standard Time
+      </span>
+      <span className="font-bold text-white text-sm sm:text-base leading-tight">
+        {day}
+      </span>
+      <span className="text-blue-200 text-xs sm:text-sm font-bold mb-1">
+        {date}
+      </span>
     </div>
   );
 }
 
 // Live Tagbilaran Weather for Header
 function TagbilaranWeather() {
-  const [weather, setWeather] = useState<{ temp: string; condition: string; icon: string } | null>(null);
+  const [weather, setWeather] = useState<{
+    temp: string;
+    condition: string;
+    icon: string;
+  } | null>(null);
   const [now, setNow] = useState(new Date());
 
   useEffect(() => {
@@ -535,7 +548,7 @@ function TagbilaranWeather() {
   }, []);
 
   // Philippine Standard Time
-  const time = now.toLocaleTimeString('en-PH', {
+  const time = now.toLocaleTimeString("en-PH", {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
@@ -548,10 +561,18 @@ function TagbilaranWeather() {
   return (
     <div className="flex flex-col items-start ml-1 text-white text-[15px] font-mono leading-tight">
       <div className="flex items-center">
-        <img src={weather.icon} alt={weather.condition} className="w-7 h-7 mr-1" />
-        <span className="truncate">TAG City: {weather.temp}, {weather.condition}</span>
+        <img
+          src={weather.icon}
+          alt={weather.condition}
+          className="w-7 h-7 mr-1"
+        />
+        <span className="truncate">
+          TAG City: {weather.temp}, {weather.condition}
+        </span>
       </div>
-      <span className="block w-33 text-[20px] text-blue-100 bg-blue-800 rounded-2xl mt-1 text-center">{time}</span>
+      <span className="block w-33 text-[20px] text-blue-100 bg-blue-800 rounded-2xl mt-1 text-center">
+        {time}
+      </span>
     </div>
   );
 }
@@ -577,26 +598,26 @@ export default function LandingPage() {
             timestamp: new Date().toISOString(),
             feedback: feedbackText,
             email: feedbackEmail,
-          }
-        ]
+          },
+        ],
       };
-      const res = await fetch('https://sheetdb.io/api/v1/ags2gxrfy1pqi', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("https://sheetdb.io/api/v1/ags2gxrfy1pqi", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
       if (!res.ok) {
-        throw new Error('Failed to send feedback. Please try again.');
+        throw new Error("Failed to send feedback. Please try again.");
       }
       setFeedbackSubmitted(true);
-      setFeedbackText('');
-      setFeedbackEmail('');
+      setFeedbackText("");
+      setFeedbackEmail("");
       setTimeout(() => {
         setShowFeedbackModal(false);
         setFeedbackSubmitted(false);
       }, 2000);
     } catch (err: any) {
-      setFeedbackError(err.message || 'An error occurred. Please try again.');
+      setFeedbackError(err.message || "An error occurred. Please try again.");
     } finally {
       setFeedbackLoading(false);
     }
@@ -652,14 +673,13 @@ export default function LandingPage() {
           </motion.div>
 
           {/* Header Icons */}
-          
+
           <div className="flex items-center space-x-4">
-            
             <motion.div
               whileHover={{ scale: 1.1 }}
               onClick={() => setShowHelpModal(true)}
-            > 
-            {/*
+            >
+              {/*
               <span className="block">
                 <HelpCircle className="w-5 h-5 text-white" />
               </span>
@@ -684,9 +704,7 @@ export default function LandingPage() {
       {/* Hero Section */}
       <main className="flex-1 flex flex-col justify-center items-center text-center px-6 py-20 relative">
         {/* Weather widget absolutely positioned in the top right of hero */}
-        <div className="absolute top-0 right-0 z-20">
-     
-        </div>
+        <div className="absolute top-0 right-0 z-20"></div>
         {/* Background Image for Hero Section */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -982,9 +1000,16 @@ export default function LandingPage() {
             transition={{ delay: 0.8, duration: 0.6 }}
             className="text-center mb-12"
           >
-            <span className="inline-block px-4 py-1 bg-blue-200 text-blue-800 rounded-full font-semibold text-xs mb-3 tracking-widest shadow-sm">FEATURED</span>
-            <h1 className="text-4xl font-extrabold text-blue-900 mb-2 drop-shadow">Featured Articles</h1>
-            <p className="text-lg text-blue-700 max-w-2xl mx-auto font-medium">Get inspired by our latest stories, insights, and highlights from the world of SMCT and its partners.</p>
+            <span className="inline-block px-4 py-1 bg-blue-200 text-blue-800 rounded-full font-semibold text-xs mb-3 tracking-widest shadow-sm">
+              FEATURED
+            </span>
+            <h1 className="text-4xl font-extrabold text-blue-900 mb-2 drop-shadow">
+              Featured Articles
+            </h1>
+            <p className="text-lg text-blue-700 max-w-2xl mx-auto font-medium">
+              Get inspired by our latest stories, insights, and highlights from
+              the world of SMCT and its partners.
+            </p>
           </motion.div>
           <div className="flex flex-col gap-10">
             {featuredArticles.length === 0 ? (
@@ -1011,9 +1036,15 @@ export default function LandingPage() {
                     </div>
                     <div className="flex-1 p-6 flex flex-col justify-between">
                       <div>
-                        <span className="inline-block px-3 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold mb-2">{article.category}</span>
-                        <h2 className="text-2xl font-bold text-blue-900 mb-2 group-hover:text-blue-700 transition-colors">{article.name}</h2>
-                        <p className="text-base text-gray-700 mb-4 font-medium">{article.excerpt}</p>
+                        <span className="inline-block px-3 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold mb-2">
+                          {article.category}
+                        </span>
+                        <h2 className="text-2xl font-bold text-blue-900 mb-2 group-hover:text-blue-700 transition-colors">
+                          {article.name}
+                        </h2>
+                        <p className="text-base text-gray-700 mb-4 font-medium">
+                          {article.excerpt}
+                        </p>
                       </div>
                       <div>
                         <a
@@ -1455,21 +1486,30 @@ export default function LandingPage() {
       {/* Feedback Button */}
       <div className="fixed bottom-6 right-6 z-50 group">
         <button
-          className="bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white rounded-full p-4 shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-200 transform hover:scale-110 active:scale-95 group"
+          className="bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white rounded-full p-5 shadow-2xl focus:outline-none focus:ring-4 focus:ring-blue-300/60 transition-all duration-200 transform hover:scale-110 active:scale-95 group hover:shadow-blue-400/40 hover:shadow-lg flex items-center justify-center"
           onClick={() => setShowFeedbackModal(true)}
           aria-label="Send Feedback"
           type="button"
         >
-          <span className="sr-only bg-white">Send Feedback</span>
-          {/* Chat bubble icon */}
-          <svg className="w-7 h-7 group-hover:animate-bounce" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8l-4.28 1.07A1 1 0 013 19.13l1.07-4.28A8.96 8.96 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          {/* Chat bubble icon, larger and centered */}
+          <svg
+            className="w-8 h-8 group-hover:animate-bounce mx-auto"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8l-4.28 1.07A1 1 0 013 19.13l1.07-4.28A8.96 8.96 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+            />
           </svg>
+          <span className="ml-2 font-semibold text-white text-base hidden sm:inline">
+            Send Feedback
+          </span>
         </button>
-        {/* Tooltip */}
-        <div className="absolute bottom-16 right-0 mb-2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200">
-          <span className="bg-gray-900 text-white text-xs rounded px-3 py-1 shadow-lg">Send Feedback</span>
-        </div>
       </div>
       {/* Feedback Modal */}
       {showFeedbackModal && (
@@ -1478,13 +1518,28 @@ export default function LandingPage() {
             {/* Modal Header */}
             <div className="flex items-center gap-3 px-8 pt-8 pb-4 border-b border-blue-100">
               <div className="bg-blue-600 rounded-full p-2 flex items-center justify-center">
-                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8l-4.28 1.07A1 1 0 013 19.13l1.07-4.28A8.96 8.96 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                <svg
+                  className="w-7 h-7 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8l-4.28 1.07A1 1 0 013 19.13l1.07-4.28A8.96 8.96 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                  />
                 </svg>
               </div>
               <div>
-                <h2 className="text-xl font-bold text-blue-700">Send Feedback</h2>
-                <p className="text-xs text-blue-500 font-medium">We value your feedback! Let us know how we can improve.</p>
+                <h2 className="text-xl font-bold text-blue-700">
+                  Send Feedback
+                </h2>
+                <p className="text-xs text-blue-500 font-medium">
+                  We value your feedback! Let us know how we can improve.
+                </p>
               </div>
               <button
                 className="absolute top-3 right-4 text-gray-400 hover:text-blue-700 text-2xl font-bold focus:outline-none"
@@ -1499,13 +1554,28 @@ export default function LandingPage() {
               {feedbackSubmitted ? (
                 <div className="flex flex-col items-center justify-center py-8">
                   {/* Animated checkmark */}
-                  <svg className="w-16 h-16 text-green-500 mb-4 animate-bounce" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  <svg
+                    className="w-16 h-16 text-green-500 mb-4 animate-bounce"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
                   </svg>
-                  <div className="text-green-700 font-bold text-lg text-center">Thank you for your feedback!</div>
+                  <div className="text-green-700 font-bold text-lg text-center">
+                    Thank you for your feedback!
+                  </div>
                 </div>
               ) : (
-                <form onSubmit={handleFeedbackSubmit} className="flex flex-col gap-5">
+                <form
+                  onSubmit={handleFeedbackSubmit}
+                  className="flex flex-col gap-5"
+                >
                   <div>
                     <textarea
                       required
@@ -1513,7 +1583,7 @@ export default function LandingPage() {
                       className="border-2 border-blue-200 rounded-xl p-3 w-full min-h-[90px] text-base focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all resize-none shadow-sm"
                       placeholder="Your feedback..."
                       value={feedbackText}
-                      onChange={e => setFeedbackText(e.target.value)}
+                      onChange={(e) => setFeedbackText(e.target.value)}
                       aria-label="Your feedback"
                       disabled={feedbackLoading}
                     />
@@ -1526,12 +1596,14 @@ export default function LandingPage() {
                     className="border-2 border-blue-200 rounded-xl p-3 w-full text-base focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all shadow-sm"
                     placeholder="Your email (optional)"
                     value={feedbackEmail}
-                    onChange={e => setFeedbackEmail(e.target.value)}
+                    onChange={(e) => setFeedbackEmail(e.target.value)}
                     aria-label="Your email (optional)"
                     disabled={feedbackLoading}
                   />
                   {feedbackError && (
-                    <div className="text-red-600 text-sm font-semibold text-center mb-2">{feedbackError}</div>
+                    <div className="text-red-600 text-sm font-semibold text-center mb-2">
+                      {feedbackError}
+                    </div>
                   )}
                   <button
                     type="submit"
@@ -1539,12 +1611,28 @@ export default function LandingPage() {
                     disabled={feedbackLoading}
                   >
                     {feedbackLoading && (
-                      <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                      <svg
+                        className="animate-spin h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v8z"
+                        ></path>
                       </svg>
                     )}
-                    {feedbackLoading ? 'Sending...' : 'Submit Feedback'}
+                    {feedbackLoading ? "Sending..." : "Submit Feedback"}
                   </button>
                 </form>
               )}
