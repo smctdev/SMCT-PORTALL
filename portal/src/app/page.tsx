@@ -34,6 +34,7 @@ import React, { useState, useEffect } from "react";
 
 import { SiFacebook } from "react-icons/si";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 type App = {
   id: number;
@@ -577,6 +578,38 @@ function TagbilaranWeather() {
   );
 }
 
+// Reminder: Run 'npm install @react-google-maps/api' if you haven't already.
+
+const mapContainerStyle = { width: '100%', height: '400px' };
+const defaultCenter = { lat: 9.6556, lng: 123.8531 }; // Tagbilaran City
+
+type LocationMapModalProps = {
+  open: boolean;
+  onClose: () => void;
+  center?: { lat: number; lng: number };
+};
+
+function LocationMapModal({ open, onClose, center = defaultCenter }: LocationMapModalProps) {
+  if (!open) return null;
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+      <div className="bg-white rounded-xl shadow-lg p-6 max-w-2xl w-full relative">
+        <button className="absolute top-2 right-2 text-2xl" onClick={onClose}>&times;</button>
+        <h2 className="text-xl font-bold mb-4">Our Location</h2>
+        <iframe
+          src="https://www.google.com/maps/d/embed?mid=1vdJPRYaAKd4Igt2lbbicIMcXmes&hl=en&ehbc=2E312F"
+          width="100%"
+          height="500"
+          className="rounded-xl border-0"
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function LandingPage() {
   // Feedback modal state and handlers (moved inside component)
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
@@ -592,16 +625,19 @@ export default function LandingPage() {
     setFeedbackLoading(true);
     setFeedbackError("");
     try {
+      const now = new Date();
       const payload = {
         data: [
           {
-            timestamp: new Date().toISOString(),
+            timestamp: now.toISOString(),
+            date: now.toISOString().slice(0, 10), // YYYY-MM-DD
+            time: now.toTimeString().slice(0, 8), // HH:mm:ss
             feedback: feedbackText,
             email: feedbackEmail,
           },
         ],
       };
-      const res = await fetch("https://sheetdb.io/api/v1/ags2gxrfy1pqi", {
+      const res = await fetch("https://sheetdb.io/api/v1/hp7jd34na7hxd", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -628,6 +664,7 @@ export default function LandingPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   // Modal state for Help icon
   const [showHelpModal, setShowHelpModal] = useState(false);
+  const [showMap, setShowMap] = useState(false);
 
   // Filter logic for both arrays
   const filterFn = (app: App) => {
@@ -1314,6 +1351,12 @@ export default function LandingPage() {
               </div>
               <h4 className="font-bold text-lg mb-2">Location</h4>
               <p>J.A. Clarin St, Tagbilaran City, Bohol</p>
+              <button
+                className="mt-3 bg-blue-600 text-white px-4 py-2 rounded font-bold hover:bg-blue-700 transition"
+                onClick={() => setShowMap(true)}
+              >
+                Show Map
+              </button>
             </div>
             <div className="flex flex-col items-center text-center">
               <div className="bg-blue-500 p-4 rounded-full mb-4">
@@ -1339,6 +1382,7 @@ export default function LandingPage() {
             </div>
           </div>
         </motion.div>
+        <LocationMapModal open={showMap} onClose={() => setShowMap(false)} />
       </div>
 
       {/* Footer */}
