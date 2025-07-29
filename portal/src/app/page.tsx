@@ -283,6 +283,7 @@ const devs = [
     link: "https://chat.smctgroup.ph/direct/dev_zart",
     avatar: "/avatars/zart.jpg",
   },
+ 
 ];
 
 // Add a "Quick Actions" section with frequently used tools
@@ -583,32 +584,7 @@ function TagbilaranWeather() {
 const mapContainerStyle = { width: '100%', height: '400px' };
 const defaultCenter = { lat: 9.6556, lng: 123.8531 }; // Tagbilaran City
 
-type LocationMapModalProps = {
-  open: boolean;
-  onClose: () => void;
-  center?: { lat: number; lng: number };
-};
-
-function LocationMapModal({ open, onClose, center = defaultCenter }: LocationMapModalProps) {
-  if (!open) return null;
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="bg-white rounded-xl shadow-lg p-6 max-w-2xl w-full relative">
-        <button className="absolute top-2 right-2 text-2xl" onClick={onClose}>&times;</button>
-        <h2 className="text-xl font-bold mb-4">Our Location</h2>
-        <iframe
-          src="https://www.google.com/maps/d/embed?mid=1vdJPRYaAKd4Igt2lbbicIMcXmes&hl=en&ehbc=2E312F"
-          width="100%"
-          height="500"
-          className="rounded-xl border-0"
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        />
-      </div>
-    </div>
-  );
-}
+// Remove LocationMapModal and showMap state
 
 export default function LandingPage() {
   // Feedback modal state and handlers (moved inside component)
@@ -664,7 +640,7 @@ export default function LandingPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   // Modal state for Help icon
   const [showHelpModal, setShowHelpModal] = useState(false);
-  const [showMap, setShowMap] = useState(false);
+  // Remove LocationMapModal and showMap state
 
   // Filter logic for both arrays
   const filterFn = (app: App) => {
@@ -1343,34 +1319,41 @@ export default function LandingPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h3 className="text-3xl font-bold mb-8 text-center">Get In Touch</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="flex flex-col items-center text-center">
+          <h3 className="text-5xl font-bold mb-5 text-center">Get In Touch</h3>
+          <div className="flex flex-col md:flex-row items-center justify-center gap-70 w-full max-w-4xl mx-auto">
+            <div className="flex flex-col items-center text-center flex-1 min-w-[220px]">
               <div className="bg-blue-500 p-4 rounded-full mb-4">
                 <FiMapPin className="w-6 h-6 text-white" />
               </div>
-              <h4 className="font-bold text-lg mb-2">Location</h4>
+              <h4 className="font-bold text-2xl mb-2">Location</h4>
               <p>J.A. Clarin St, Tagbilaran City, Bohol</p>
-              <button
-                className="mt-3 bg-blue-600 text-white px-4 py-2 rounded font-bold hover:bg-blue-700 transition"
-                onClick={() => setShowMap(true)}
-              >
-                Show Map
-              </button>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <div className="bg-blue-500 p-4 rounded-full mb-4">
-                <FiPhone className="w-6 h-6 text-white" />
+              <div className="flex items-center justify-center mt-3">
+                <div className="w-full max-w-2xl">
+                  <iframe
+                    src="https://www.google.com/maps/d/embed?mid=1vdJPRYaAKd4Igt2lbbicIMcXmes&hl=en&ehbc=2E312F"
+                    width="500"
+                    height="500"
+                    className="rounded-xl border-0"
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </div>
               </div>
-              <h4 className="font-bold text-lg mb-2">Contact</h4>
+            </div>
+            <div className="flex flex-col items-center text-center flex-1 min-w-[216px]">
+              <div className="bg-blue-500 p-4 rounded-full mb-4">
+                <FiPhone className="w-10 h-10 text-white" />
+              </div>
+              <h4 className="font-bold text-3xl mb-3">Contact</h4>
               <p>(+63) 970 192 9564</p>
               <p>info@smctgroup.ph</p>
             </div>
-            <div className="flex flex-col items-center text-center">
+            <div className="flex flex-col items-center text-center flex-1 min-w-[216px]">
               <div className="bg-blue-500 p-4 rounded-full mb-4">
-                <SiFacebook className="w-6 h-6 text-white" />
+                <SiFacebook className="w-10 h-10 text-white" />
               </div>
-              <h4 className="font-bold text-lg mb-2">Facebook page :</h4>
+              <h4 className="font-bold text-3xl mb-3">Facebook page :</h4>
               <a
                 href="https://www.facebook.com/StrongMotoCentrumInc/"
                 target="_blank"
@@ -1382,7 +1365,6 @@ export default function LandingPage() {
             </div>
           </div>
         </motion.div>
-        <LocationMapModal open={showMap} onClose={() => setShowMap(false)} />
       </div>
 
       {/* Footer */}
