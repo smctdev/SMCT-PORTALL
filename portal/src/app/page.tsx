@@ -1353,7 +1353,7 @@ export default function LandingPage() {
             </div>
           </div>
           {/* Map below contact info */}
-          <div className="flex flex-col items-center mt-70">
+          <div className="flex flex-col items-center mt-32">
             <h3 className="text-4xl font-bold mb-10 text-center">Our Branches Location</h3>
             <div className="bg-white rounded-2xl shadow-lg border border-blue-200 p-2 flex items-center justify-center" style={{ width: '1400px', height: '600px' }}>
               <iframe
