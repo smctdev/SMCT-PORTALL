@@ -1320,7 +1320,7 @@ export default function LandingPage() {
           transition={{ duration: 0.8 }}
         >
           <h3 className="text-5xl font-bold mb-5 text-center">Get In Touch</h3>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-40 w-full max-w-4xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-75 w-full max-w-4xl mx-auto">
 
             <div className="flex flex-col items-center text-center flex-1 min-w-[220px]">
               <div className="bg-blue-500 p-4 rounded-full mb-4">
