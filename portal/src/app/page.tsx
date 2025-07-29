@@ -1320,32 +1320,20 @@ export default function LandingPage() {
           transition={{ duration: 0.8 }}
         >
           <h3 className="text-5xl font-bold mb-5 text-center">Get In Touch</h3>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-70 w-full max-w-4xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-40 w-full max-w-4xl mx-auto">
+
             <div className="flex flex-col items-center text-center flex-1 min-w-[220px]">
               <div className="bg-blue-500 p-4 rounded-full mb-4">
-                <FiMapPin className="w-6 h-6 text-white" />
+                <FiMapPin className="w-10 h-10 text-white" />
               </div>
               <h4 className="font-bold text-2xl mb-2">Location</h4>
               <p>J.A. Clarin St, Tagbilaran City, Bohol</p>
-              <div className="flex items-center justify-center mt-3">
-                <div className="w-full max-w-2xl">
-                  <iframe
-                    src="https://www.google.com/maps/d/embed?mid=1vdJPRYaAKd4Igt2lbbicIMcXmes&hl=en&ehbc=2E312F"
-                    width="500"
-                    height="500"
-                    className="rounded-xl border-0"
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-                </div>
-              </div>
             </div>
             <div className="flex flex-col items-center text-center flex-1 min-w-[216px]">
               <div className="bg-blue-500 p-4 rounded-full mb-4">
                 <FiPhone className="w-10 h-10 text-white" />
               </div>
-              <h4 className="font-bold text-3xl mb-3">Contact</h4>
+              <h4 className="font-bold text-2xl mb-3">Contact</h4>
               <p>(+63) 970 192 9564</p>
               <p>info@smctgroup.ph</p>
             </div>
@@ -1353,7 +1341,7 @@ export default function LandingPage() {
               <div className="bg-blue-500 p-4 rounded-full mb-4">
                 <SiFacebook className="w-10 h-10 text-white" />
               </div>
-              <h4 className="font-bold text-3xl mb-3">Facebook page :</h4>
+              <h4 className="font-bold text-2xl mb-3">Facebook page :</h4>
               <a
                 href="https://www.facebook.com/StrongMotoCentrumInc/"
                 target="_blank"
@@ -1362,6 +1350,21 @@ export default function LandingPage() {
               >
                 STRONG MOTO CENTRUM,INC.
               </a>
+            </div>
+          </div>
+          {/* Map below contact info */}
+          <div className="flex flex-col items-center mt-70">
+            <h3 className="text-4xl font-bold mb-10 text-center">Our Branches Location</h3>
+            <div className="bg-white rounded-2xl shadow-lg border border-blue-200 p-2 flex items-center justify-center" style={{ width: '1400px', height: '600px' }}>
+              <iframe
+                src="https://www.google.com/maps/d/embed?mid=1vdJPRYaAKd4Igt2lbbicIMcXmes&hl=en&ehbc=2E312F"
+                width="100%"
+                height="100%"
+                className="rounded-xl border-0"
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
           </div>
         </motion.div>
