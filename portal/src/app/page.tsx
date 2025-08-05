@@ -1331,7 +1331,7 @@ export default function LandingPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h3 className="text-5xl font-bold mb-5 text-center">Get In Touch</h3>
+          <h3 className="text-5xl font-bold mb-30 text-center">Get In Touch</h3>
           <div className="flex flex-col md:flex-row items-center justify-center gap-75 w-full max-w-4xl mx-auto">
 
             <div className="flex flex-col items-center text-center flex-1 min-w-[220px]">
@@ -1367,7 +1367,7 @@ export default function LandingPage() {
           {/* Map below contact info */}
           <div className="flex flex-col items-center mt-32">
             <h3 className="text-4xl font-bold mb-10 text-center">Our Branches Location</h3>
-            <div className="bg-white rounded-2xl shadow-lg border border-blue-200 p-2 flex items-center justify-center" style={{ width: '1400px', height: '600px' }}>
+            <div className="bg-white rounded-2xl shadow-lg border border-blue-200 p-2 flex items-center justify-center" style={{ width: '1400px', height: '800px' }}>
               <iframe
                 src="https://www.google.com/maps/d/embed?mid=1vdJPRYaAKd4Igt2lbbicIMcXmes&hl=en&ehbc=2E312F"
                 width="100%"
