@@ -136,6 +136,18 @@ const apps = [
     color: "bg-gradient-to-br from-green-500 via-green-600 to-green-700",
     hoverColor: "bg-blue-500 hover:bg-yellow-400 hover:text-white font-bold",
   },
+  {
+    id: 17,
+    name: "CONTRACT FORM",
+    description:
+      "A contract form used to confirm the sale or service agreement between the customer and SMCT, detailing the vehicle, terms, and signatures.",
+    icon: <FileText className="w-6 h-6" />,
+    url: "https://smctgroup.com/contractform/login.php",
+    category: "CONTRACT",
+    color: "bg-gradient-to-br from-cyan-500 via-cyan-600 to-cyan-700",
+    hoverColor: "bg-blue-500 hover:bg-yellow-400 hover:text-white font-bold",
+  },
+  
 ];
 
 // Second set of applications
