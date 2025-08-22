@@ -5,5 +5,5 @@ services:
     build: .
     container_name: smct-app2
     restart: unless-stopped
-    ports:
-      - "1007:1007"
+    expose:
+      - "1007"
