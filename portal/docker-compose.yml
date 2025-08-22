@@ -6,4 +6,4 @@ services:
     container_name: smct-app2
     restart: unless-stopped
     expose:
-      - "1007"
+      - "1007:1007"
