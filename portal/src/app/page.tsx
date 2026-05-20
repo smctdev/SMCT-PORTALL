@@ -62,7 +62,7 @@ const apps = [
     id: 2,
     name: "PERFORMANCE EVALUATION",
     description:
-      "Track, manage, and resolve support tickets efficiently with SMCT TICKETING SQL",
+      "Evaluate and track staff performance, feedback, and assessment records.",
     icon: <ChartLine className="w-6 h-6 " />,
     url: "https://performance-evaluation.smctgroup.ph",
     category: "EVALUATION",
@@ -73,7 +73,7 @@ const apps = [
     id: 3,
     name: "TICKETING PORTAL",
     description:
-      "Handle customer and internal requests efficiently inside NetSuite with - SMCT TICKETING NETSUITE",
+      "Handle customer and internal support requests efficiently through the SMCT Ticketing Portal.",
     icon: <Ticket className="w-6 h-6" />,
     url: "https://ticketing-portal.smctgroup.ph",
     category: "TICKETING",
