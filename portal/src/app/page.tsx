@@ -22,12 +22,11 @@ import {
   DollarSign,
   Sparkles,
   Rocket,
-  HelpCircle,
   Globe,
   Target,
-  GithubIcon,
   FileText,
   LifeBuoy,
+  ChartLine,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React, { useState, useEffect } from "react";
@@ -61,23 +60,23 @@ const apps = [
   },
   {
     id: 2,
-    name: "TICKETING SQL",
+    name: "PERFORMANCE EVALUATION",
     description:
       "Track, manage, and resolve support tickets efficiently with SMCT TICKETING SQL",
-    icon: <Ticket className="w-6 h-6 " />,
-    url: "http://122.52.134.146:4000/",
-    category: "SQL",
+    icon: <ChartLine className="w-6 h-6 " />,
+    url: "https://performance-evaluation.smctgroup.ph",
+    category: "EVALUATION",
     color: "bg-gradient-to-br from-blue-900 via-blue-900 to-blue-900",
     hoverColor: "bg-blue-500 hover:bg-yellow-400 hover:text-white font-bold",
   },
   {
     id: 3,
-    name: "TICKETING NETSUITE",
+    name: "TICKETING PORTAL",
     description:
       "Handle customer and internal requests efficiently inside NetSuite with - SMCT TICKETING NETSUITE",
     icon: <Ticket className="w-6 h-6" />,
-    url: " https://ticketing-netsuite.smctgroup.ph/",
-    category: "NETSUITE",
+    url: "https://ticketing-portal.smctgroup.ph",
+    category: "TICKETING",
     color: "bg-gradient-to-br from-indigo-500 via-indigo-600 to-indigo-700",
     hoverColor: "bg-blue-500 hover:bg-yellow-400 hover:text-white font-bold",
   },
@@ -123,17 +122,6 @@ const apps = [
     url: "https://request.smctgroup.ph/",
     category: "REQUEST",
     color: "bg-gradient-to-br from-gray-500 via-gray-600 to-gray-700",
-    hoverColor: "bg-blue-500 hover:bg-yellow-400 hover:text-white font-bold",
-  },
-  {
-    id: 8,
-    name: "CREDIT ADVICE",
-    description:
-      "Manage and process employee credit or cash advance requests with ease using SMCT CREDIT ADVANCE",
-    icon: <DollarSign className="w-6 h-6" />,
-    url: "https://credit-advice.smctgroup.ph/",
-    category: "ADVICE",
-    color: "bg-gradient-to-br from-green-500 via-green-600 to-green-700",
     hoverColor: "bg-blue-500 hover:bg-yellow-400 hover:text-white font-bold",
   },
   {
