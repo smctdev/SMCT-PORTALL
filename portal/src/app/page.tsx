@@ -1,7 +1,7 @@
 "use client";
 
 import { FiPhone, FiMapPin } from "react-icons/fi";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import {
   Card,
@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import {
   Search,
   ChevronRight,
+  ChevronDown,
   Box,
   Computer,
   Ticket,
@@ -24,9 +25,15 @@ import {
   Rocket,
   Globe,
   Target,
+  Building2,
   FileText,
   LifeBuoy,
   ChartLine,
+  Clock,
+  LayoutGrid,
+  ShoppingBag,
+  MessageCircle,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React, { useState, useEffect } from "react";
@@ -472,109 +479,368 @@ const emergencyContacts = [
   },
 ];
 
-// Live Date and Time Display for Header
-function DateTimeDisplay() {
-  const [now, setNow] = useState(new Date());
+function AbstractSectionBackground({
+  patternId = "section-grid",
+  variant = "internal",
+}: {
+  patternId?: string;
+  variant?: "internal" | "commerce" | "articles";
+}) {
+  const isCommerce = variant === "commerce";
+  const isArticles = variant === "articles";
 
-  useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+  const gradientClass = isCommerce
+    ? "from-white via-emerald-50/40 to-blue-50/35"
+    : isArticles
+      ? "from-slate-50 via-violet-50/35 to-blue-50/40"
+      : "from-slate-50 via-blue-50/50 to-indigo-50/30";
 
-  // Use Asia/Manila timezone for Philippine Standard Time
-  const day = now.toLocaleDateString("en-PH", {
-    weekday: "long",
-    timeZone: "Asia/Manila",
-  });
-  const date = now.toLocaleDateString("en-PH", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    timeZone: "Asia/Manila",
-  });
-  const time = now.toLocaleTimeString("en-PH", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-    timeZone: "Asia/Manila",
-  });
+  const blobTopRight = isCommerce
+    ? "bg-emerald-400/15"
+    : isArticles
+      ? "bg-violet-400/15"
+      : "bg-blue-400/20";
+
+  const blobLeft = isCommerce
+    ? "bg-teal-400/10"
+    : isArticles
+      ? "bg-indigo-400/12"
+      : "bg-indigo-400/15";
+
+  const blobBottom = isCommerce
+    ? "bg-blue-400/15"
+    : isArticles
+      ? "bg-blue-400/18"
+      : "bg-sky-400/20";
+
+  const gridColor = isCommerce
+    ? "text-emerald-300/20"
+    : isArticles
+      ? "text-violet-300/22"
+      : "text-blue-300/25";
+
+  const dotGradient = isCommerce
+    ? "radial-gradient(circle at 1px 1px, rgb(16 185 129 / 0.1) 1px, transparent 0)"
+    : isArticles
+      ? "radial-gradient(circle at 1px 1px, rgb(139 92 246 / 0.1) 1px, transparent 0)"
+      : "radial-gradient(circle at 1px 1px, rgb(59 130 246 / 0.12) 1px, transparent 0)";
 
   return (
-    <div className="flex flex-col items-end ml-4">
-      <span className="font-bold tracking-wide text-blue-100 text-xs sm:text-sm mb-1">
-        Philippine Standard Time
-      </span>
-      <span className="font-bold text-white text-sm sm:text-base leading-tight">
-        {day}
-      </span>
-      <span className="text-blue-200 text-xs sm:text-sm font-bold mb-1">
-        {date}
-      </span>
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
+      <div className={`absolute inset-0 bg-gradient-to-br ${gradientClass}`} />
+      <div
+        className={`absolute -top-20 right-0 h-72 w-72 rounded-full blur-3xl ${blobTopRight}`}
+      />
+      <div
+        className={`absolute top-1/2 -left-24 h-80 w-80 rounded-full blur-3xl ${blobLeft}`}
+      />
+      <div
+        className={`absolute -bottom-16 right-1/3 h-64 w-64 rounded-full blur-3xl ${blobBottom}`}
+      />
+      <svg
+        className={`absolute inset-0 h-full w-full ${gridColor}`}
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <pattern
+            id={patternId}
+            width="40"
+            height="40"
+            patternUnits="userSpaceOnUse"
+          >
+            <path
+              d="M 40 0 L 0 0 0 40"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="0.75"
+            />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill={`url(#${patternId})`} />
+      </svg>
+      <div
+        className="absolute inset-0 opacity-[0.4]"
+        style={{
+          backgroundImage: dotGradient,
+          backgroundSize: "28px 28px",
+        }}
+      />
     </div>
   );
 }
 
-// Live Tagbilaran Weather for Header
-function TagbilaranWeather() {
+function ApplicationHubsDivider() {
+  return (
+    <div
+      className="flex shrink-0 flex-col items-center justify-center py-2 sm:py-3"
+      aria-hidden
+    >
+      <div className="flex w-full max-w-md items-center gap-3 px-4">
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-blue-300/70 to-blue-400/30" />
+        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200/90 bg-white shadow-md ring-4 ring-gray-100/80">
+          <ChevronDown className="h-4 w-4 text-blue-500" strokeWidth={2.5} />
+        </div>
+        <div className="h-px flex-1 bg-gradient-to-l from-transparent via-emerald-300/70 to-emerald-400/30" />
+      </div>
+      <p className="mt-3 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
+        Brand stores & shops
+      </p>
+    </div>
+  );
+}
+
+function ContactSectionDivider() {
+  return (
+    <div
+      className="flex shrink-0 flex-col items-center justify-center py-2 sm:py-3"
+      aria-hidden
+    >
+      <div className="flex w-full max-w-md items-center gap-3 px-4">
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-blue-400/70 to-blue-300/30" />
+        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-blue-100 bg-white shadow-md ring-4 ring-blue-50/90">
+          <LifeBuoy className="h-4 w-4 text-blue-600" strokeWidth={2.5} />
+        </div>
+        <div className="h-px flex-1 bg-gradient-to-l from-transparent via-blue-500/60 to-blue-400/25" />
+      </div>
+      <p className="mt-3 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
+        Get in touch
+      </p>
+    </div>
+  );
+}
+
+function AboutSectionDivider() {
+  return (
+    <div
+      className="flex shrink-0 flex-col items-center justify-center py-2 sm:py-3"
+      aria-hidden
+    >
+      <div className="flex w-full max-w-md items-center gap-3 px-4">
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-blue-400/70 to-blue-300/30" />
+        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-blue-100 bg-white shadow-md ring-4 ring-blue-50/90">
+          <Building2 className="h-4 w-4 text-blue-600" strokeWidth={2.5} />
+        </div>
+        <div className="h-px flex-1 bg-gradient-to-l from-transparent via-blue-500/60 to-blue-400/25" />
+      </div>
+      <p className="mt-3 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
+        Our company
+      </p>
+    </div>
+  );
+}
+
+function FeaturedArticlesDivider() {
+  return (
+    <div
+      className="flex shrink-0 flex-col items-center justify-center py-2 sm:py-3"
+      aria-hidden
+    >
+      <div className="flex w-full max-w-md items-center gap-3 px-4">
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-emerald-300/70 to-violet-300/40" />
+        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-blue-100 bg-white shadow-md ring-4 ring-blue-50/90">
+          <FileText className="h-4 w-4 text-blue-600" strokeWidth={2.5} />
+        </div>
+        <div className="h-px flex-1 bg-gradient-to-l from-transparent via-blue-400/70 to-blue-300/30" />
+      </div>
+      <p className="mt-3 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
+        News & highlights
+      </p>
+    </div>
+  );
+}
+
+// Live date/time + weather panel for the header bar
+function HeaderStatusBar() {
+  const [now, setNow] = useState<Date | null>(null);
   const [weather, setWeather] = useState<{
     temp: string;
     condition: string;
     icon: string;
   } | null>(null);
-  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    setNow(new Date());
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     async function fetchWeather() {
-      const apiKey = "6832420060375fa1f473c4bee1266976"; // <-- Use your real OpenWeatherMap API key
-      const res = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=Tagbilaran,PH&appid=${apiKey}&units=metric`
-      );
-      const data = await res.json();
-      if (res.ok && data.main && data.weather) {
-        setWeather({
-          temp: Math.round(data.main.temp) + "°C",
-          condition: data.weather[0].main,
-          icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`,
-        });
-      } else {
+      const apiKey = "6832420060375fa1f473c4bee1266976";
+      try {
+        const res = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?q=Tagbilaran,PH&appid=${apiKey}&units=metric`
+        );
+        const data = await res.json();
+        if (res.ok && data.main && data.weather) {
+          setWeather({
+            temp: `${Math.round(data.main.temp)}°C`,
+            condition: data.weather[0].main,
+            icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`,
+          });
+        } else {
+          setWeather(null);
+        }
+      } catch {
         setWeather(null);
       }
     }
     fetchWeather();
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Philippine Standard Time
-  const time = now.toLocaleTimeString("en-PH", {
+  const timeOpts: Intl.DateTimeFormatOptions = {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
     hour12: false,
     timeZone: "Asia/Manila",
-  });
+  };
+  const timeShortOpts: Intl.DateTimeFormatOptions = {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Manila",
+  };
 
-  if (!weather) return <div className="text-white text-[10px] ml-1">N/A</div>;
+  const time = now?.toLocaleTimeString("en-PH", timeOpts) ?? "--:--:--";
+  const timeShort =
+    now?.toLocaleTimeString("en-PH", timeShortOpts) ?? "--:--";
+  const day =
+    now?.toLocaleDateString("en-PH", {
+      weekday: "short",
+      timeZone: "Asia/Manila",
+    }) ?? "---";
+  const date =
+    now?.toLocaleDateString("en-PH", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      timeZone: "Asia/Manila",
+    }) ?? "--- --, ----";
 
   return (
-    <div className="flex flex-col items-start ml-1 text-white text-[15px] font-mono leading-tight">
-      <div className="flex items-center">
-        <img
-          src={weather.icon}
-          alt={weather.condition}
-          className="w-7 h-7 mr-1"
-        />
-        <span className="truncate">
-          TAG City: {weather.temp}, {weather.condition}
-        </span>
+    <div className="flex w-full sm:w-auto items-stretch min-h-[44px] sm:min-h-[52px] rounded-xl bg-white/10 backdrop-blur-md border border-white/25 shadow-sm overflow-hidden">
+      <div className="flex flex-1 sm:flex-initial items-center gap-2 sm:gap-3 px-2.5 sm:px-4 py-1.5 sm:py-2 min-w-0">
+        <div className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-lg bg-white/15">
+          <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" aria-hidden />
+        </div>
+        <div className="flex flex-col items-start sm:items-end text-left sm:text-right min-w-0 flex-1">
+          <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-blue-100 font-semibold leading-none">
+            <span className="sm:hidden">PST</span>
+            <span className="hidden sm:inline">Philippine Standard Time</span>
+          </span>
+          <time
+            dateTime={now?.toISOString()}
+            suppressHydrationWarning
+            className="text-base sm:text-xl font-bold text-white tabular-nums leading-tight"
+          >
+            <span className="sm:hidden">{timeShort}</span>
+            <span className="hidden sm:inline">{time}</span>
+          </time>
+          <span className="text-[10px] sm:text-xs text-blue-100 font-medium truncate w-full">
+            {day}, {date}
+          </span>
+        </div>
       </div>
-      <span className="block w-33 text-[20px] text-blue-100 bg-blue-800 rounded-2xl mt-1 text-center">
-        {time}
-      </span>
+
+      <div className="w-px self-stretch bg-white/25 shrink-0" aria-hidden />
+
+      <div className="flex shrink-0 items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2">
+        {weather ? (
+          <>
+            <img
+              src={weather.icon}
+              alt={weather.condition}
+              className="w-7 h-7 sm:w-8 sm:h-8 shrink-0"
+            />
+            <div className="flex flex-col min-w-0">
+              <span className="hidden sm:block text-[10px] uppercase tracking-wider text-blue-100 font-semibold leading-none">
+                Tagbilaran
+              </span>
+              <span className="text-xs sm:text-sm font-bold text-white leading-tight whitespace-nowrap">
+                {weather.temp}
+              </span>
+              <span className="hidden sm:block text-[11px] text-blue-100 truncate max-w-[120px]">
+                {weather.condition}
+              </span>
+            </div>
+          </>
+        ) : (
+          <span className="text-[10px] sm:text-xs text-blue-100 font-medium pr-1">
+            N/A
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function FeedbackFloatingButton({
+  showFeedbackModal,
+  onToggle,
+}: {
+  showFeedbackModal: boolean;
+  onToggle: () => void;
+}) {
+  const [hovered, setHovered] = useState(false);
+  const label = showFeedbackModal ? "Close" : "Send Feedback";
+  const iconSize = 48;
+  const hoverWidth = showFeedbackModal ? 112 : 188;
+
+  return (
+    <div className="fixed bottom-5 right-4 sm:bottom-6 sm:right-6 z-50">
+      <motion.button
+        type="button"
+        aria-label={showFeedbackModal ? "Close feedback" : "Send feedback"}
+        aria-expanded={showFeedbackModal}
+        title={label}
+        onClick={onToggle}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onFocus={() => setHovered(true)}
+        onBlur={() => setHovered(false)}
+        className="relative flex h-12 items-center overflow-hidden rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 text-white shadow-lg shadow-blue-600/40 ring-2 ring-white/25 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300/80"
+        animate={{ width: hovered ? hoverWidth : iconSize }}
+        transition={{ type: "spring", stiffness: 400, damping: 32 }}
+        whileTap={{ scale: 0.96 }}
+      >
+        {!showFeedbackModal && !hovered && (
+          <motion.span
+            className="pointer-events-none absolute inset-0 z-0 rounded-full bg-blue-400/80"
+            animate={{ opacity: [0.35, 0.1, 0.35] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+            aria-hidden
+          />
+        )}
+
+        <motion.span
+          className="flex h-12 min-w-0 items-center overflow-hidden"
+          initial={false}
+          animate={{
+            opacity: hovered ? 1 : 0,
+            width: hovered ? hoverWidth - iconSize : 0,
+          }}
+          transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+          aria-hidden
+        >
+          <span className="whitespace-nowrap pl-4 pr-2 text-sm font-semibold leading-none">
+            {label}
+          </span>
+        </motion.span>
+
+        <span
+          className="relative z-10 flex shrink-0 items-center justify-center"
+          style={{ width: iconSize, height: iconSize }}
+        >
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20">
+            {showFeedbackModal ? (
+              <X className="h-5 w-5 text-white" strokeWidth={2.5} />
+            ) : (
+              <MessageCircle className="h-5 w-5 text-white cursor-pointer" strokeWidth={2.25} />
+            )}
+          </span>
+        </span>
+      </motion.button>
     </div>
   );
 }
@@ -595,6 +861,15 @@ export default function LandingPage() {
   const [feedbackLoading, setFeedbackLoading] = useState(false);
   const [feedbackError, setFeedbackError] = useState("");
   const maxFeedbackLength = 500;
+
+  useEffect(() => {
+    if (!showFeedbackModal) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowFeedbackModal(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [showFeedbackModal]);
 
   async function handleFeedbackSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -655,265 +930,301 @@ export default function LandingPage() {
   const filteredApps2 = apps2.filter(filterFn);
 
   return (
-    <div className="min-h-screen bg-gray-200 flex flex-col">
+    <div className="min-h-screen bg-gray-200 flex flex-col overflow-x-hidden">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-blue-500 shadow-sm">
-        <div className="w-full px-6 py-4 flex justify-between items-center">
+      <header className="sticky top-0 z-50 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 shadow-md border-b border-blue-400/30">
+        <div className="w-full px-3 py-2 sm:px-6 lg:px-8 sm:py-0 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:h-[72px]">
           <motion.div
-            className="flex items-center space-x-4"
+            className="flex items-center gap-2.5 sm:gap-4 min-w-0 w-full sm:w-auto sm:max-w-[min(100%,28rem)] rounded-xl bg-white/10 backdrop-blur-md border border-white/25 shadow-sm px-2.5 py-2 sm:px-4 sm:py-2.5"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="relative">
-              <Image
-                src="/smct.png"
-                alt="SMCT Group Logo"
-                width={80}
-                height={80}
-              />
-            </div>
-            <div className="flex items-center space-x-2">
-              <div>
-                <h1 className="text-2xl font-bold text-white">
+            <Image
+              src="/smct.png"
+              alt="SMCT Group Logo"
+              width={80}
+              height={80}
+              className="h-10 w-10 sm:h-14 sm:w-14 shrink-0 object-contain"
+              priority
+            />
+            <div className="min-w-0 flex-1 text-left">
+              <h1 className="text-sm sm:text-xl lg:text-2xl font-bold text-white leading-tight">
+                <span className="sm:hidden">SMCT App Center</span>
+                <span className="hidden sm:inline truncate">
                   SMCT Application Center
-                </h1>
-                <p className="text-xs text-white font-medium">
-                  Your SMCT App Library
-                </p>
-              </div>
+                </span>
+              </h1>
+              <p className="hidden sm:block text-xs text-blue-100 font-medium truncate">
+                Your SMCT App Library
+              </p>
             </div>
           </motion.div>
 
-          {/* Header Icons */}
-
-          <div className="flex items-center space-x-4">
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              onClick={() => setShowHelpModal(true)}
-            >
-              {/*
-              <span className="block">
-                <HelpCircle className="w-5 h-5 text-white" />
-              </span>
-            </motion.div>
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              
-              className="p-0 rounded-lg bg-white/24 hover:bg-white/30 transition-colors cursor-pointer"
-            >
-              {/*
-              <a href="/global" className="block">
-                <Globe className="w-5 h-5 text-white" />
-              </a> 
-              */}
-            </motion.div>
-            <DateTimeDisplay />
-            <TagbilaranWeather />
-          </div>
+          <HeaderStatusBar />
         </div>
       </header>
 
       {/* Hero Section */}
-      <main className="flex-1 flex flex-col justify-center items-center text-center px-6 py-20 relative">
-        {/* Weather widget absolutely positioned in the top right of hero */}
-        <div className="absolute top-0 right-0 z-20"></div>
-        {/* Background Image for Hero Section */}
+      <main className="flex-1 flex flex-col justify-center items-center text-center px-4 sm:px-6 py-14 sm:py-16 md:py-20 relative min-h-[min(85vh,720px)]">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: 'url("/blg.jpg")',
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
+          style={{ backgroundImage: 'url("/blg.jpg")' }}
+          aria-hidden
         >
-          {/* Overlay for better text readability */}
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-950/50 via-black/45 to-black/60 backdrop-blur-[2px]" />
         </div>
 
-        {/* Content */}
-        <div className="relative z-10">
+        <div className="relative z-10 w-full max-w-4xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="max-w-4xl mx-auto"
+            className="flex flex-col items-center rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md px-5 py-8 sm:px-10 sm:py-12 shadow-2xl"
           >
-            <div className="mb-8">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                className="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/30 mb-6"
-              >
-                <Sparkles className="w-4 h-4 text-white mr-2" />
-                <span className="text-sm font-medium text-white">
-                  Your Digital Workspace
-                </span>
-              </motion.div>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.15, duration: 0.5 }}
+              className="relative mb-5 sm:mb-6"
+            >
+              <div
+                className="absolute inset-0 scale-125 rounded-full bg-blue-400/25 blur-2xl"
+                aria-hidden
+              />
+              <Image
+                src="/smct.png"
+                alt="SMCT Group"
+                width={160}
+                height={160}
+                className="relative h-20 w-20 sm:h-28 sm:w-28 md:h-32 md:w-32 object-contain drop-shadow-2xl"
+                priority
+              />
+            </motion.div>
 
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-8 leading-tight drop-shadow-lg">
-              Welcome to{" "}
-              <span className="bg-gradient-to-r from-blue-300 to-white bg-clip-text text-transparent">
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.25, type: "spring", stiffness: 200 }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 sm:py-2 bg-white/15 backdrop-blur-sm rounded-full border border-white/25 mb-5 sm:mb-6"
+            >
+              <Sparkles className="w-4 h-4 text-blue-200 shrink-0" />
+              <span className="text-xs sm:text-sm font-semibold text-white tracking-wide">
+                Your Digital Workspace
+              </span>
+            </motion.div>
+
+            <h2 className="font-bold text-white leading-tight drop-shadow-lg mb-4 sm:mb-5">
+              <span className="block text-lg sm:text-2xl md:text-3xl font-semibold text-white/90 mb-1 sm:mb-2">
+                Welcome to
+              </span>
+              <span className="block text-2xl sm:text-4xl md:text-5xl lg:text-[3.25rem] bg-gradient-to-r from-blue-200 via-sky-100 to-white bg-clip-text text-transparent pb-1">
                 SMCT Application Center
               </span>
             </h2>
 
-            <p className="text-xl md:text-2xl text-white/90 mb-12 leading-relaxed max-w-3xl mx-auto drop-shadow-md">
+            <p className="text-sm sm:text-base md:text-lg text-white/85 leading-relaxed max-w-2xl mx-auto drop-shadow-md mb-6 sm:mb-8 px-1">
               All your team&apos;s tools, resources, and support in one place.
               Streamline your workflow and empower your team to do their best
               work.
             </p>
 
             <motion.div
-              className="flex justify-center mb-16"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4"
             >
-              <div className="relative">
-                <Image
-                  src="/smct.png"
-                  alt="Team App Hub Preview"
-                  width={400}
-                  height={400}
-                />
-              </div>
+              <a
+                href="#applications"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-white text-blue-700 px-6 py-2.5 text-sm sm:text-base font-bold shadow-lg hover:bg-blue-50 transition-colors w-full sm:w-auto"
+              >
+                Browse Applications
+                <ChevronRight className="h-4 w-4" />
+              </a>
+              <span className="text-xs sm:text-sm text-white/60 font-medium">
+                SMCT Group · Internal Portal
+              </span>
             </motion.div>
           </motion.div>
         </div>
       </main>
 
+      <div className="bg-gradient-to-b from-gray-100 via-slate-100/90 to-gray-100 px-3 sm:px-5 lg:px-8 py-8 sm:py-12 lg:py-14 flex flex-col gap-8 sm:gap-10 lg:gap-12">
       {/* Company Applications Hub */}
-      <section className="py-20 bg-white backdrop-blur-md">
-        <div className="container px-6 mx-auto relative">
-          {/* Weather widget absolutely positioned in the top right of Applications Hub */}
-          <div className="absolute top-0 right-0 z-20"></div>
+      <section
+        id="applications"
+        className="relative overflow-hidden rounded-2xl sm:rounded-3xl py-14 sm:py-20 scroll-mt-24 shadow-sm ring-1 ring-gray-200/60"
+      >
+        <AbstractSectionBackground
+          patternId="apps-hub-grid"
+          variant="internal"
+        />
+        <div className="container relative z-10 max-w-7xl px-4 sm:px-6 mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
-            className="text-center mb-12"
+            transition={{ duration: 0.5 }}
+            className="text-center mb-8 sm:mb-10"
           >
-            <div className=" justify-items-center-safe mb-22 ">
+            <span className="inline-flex items-center gap-2 px-3 py-1 mb-5 text-xs font-semibold uppercase tracking-wider text-blue-700 bg-blue-50 border border-blue-100 rounded-full">
+              <LayoutGrid className="h-3.5 w-3.5" />
+              Internal tools
+            </span>
+            <div className="flex justify-center mb-5 sm:mb-6">
               <Image
                 src="/data.png"
-                alt="SMCT Group Logo"
-                width={170}
-                height={170}
+                alt="SMCT applications"
+                width={120}
+                height={120}
+                className="h-20 w-20 sm:h-28 sm:w-28 object-contain"
               />
             </div>
-
-            <h2 className="text-4xl font-bold text-black mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3">
               Company Applications Hub
             </h2>
-            <p className="text-xl text-black font-bold max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
               Access all your essential tools and applications in one
-              centralized location
+              centralized location.
+            </p>
+            <p className="mt-3 text-sm font-medium text-blue-600">
+              {filteredApps.length}{" "}
+              {filteredApps.length === 1 ? "application" : "applications"}{" "}
+              available
             </p>
           </motion.div>
 
-          {/* Unified Search and Filter Bar */}
-          <section className="py-10 bg-white">
-            <div className="container px-6 mx-auto flex flex-col lg:flex-row justify-between items-center gap-6">
-              <div className="relative w-full lg:w-96 bg-gray-200 rounded-2xl mb-4 lg:mb-0">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+          <div className="rounded-2xl border border-gray-200/80 bg-white shadow-sm p-4 sm:p-6 mb-8 sm:mb-10">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div className="relative w-full lg:max-w-md">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
                 <Input
-                  placeholder="Search all apps..."
-                  className="pl-12 w-full rounded-xl border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-12 text-lg"
+                  placeholder="Search by name or description..."
+                  className="pl-11 h-11 sm:h-12 w-full rounded-xl border-gray-200 bg-gray-50/80 text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white"
                   value={search}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setSearch(e.target.value)
                   }
+                  aria-label="Search applications"
                 />
               </div>
-              <div className="flex flex-wrap gap-3 justify-center lg:justify-end">
-                {allCategories.map((category, index) => (
-                  <motion.div
+              <div className="flex flex-wrap gap-2 justify-center lg:justify-end">
+                {allCategories.map((category) => (
+                  <Button
                     key={category}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2 + index * 0.05, duration: 0.2 }}
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className={`rounded-full px-4 py-1.5 h-auto text-xs sm:text-sm font-semibold border-gray-200 transition-all ${
+                      selectedCategory === category
+                        ? "bg-blue-600 text-white border-blue-600 hover:bg-blue-700 hover:text-white"
+                        : "bg-white text-gray-600 hover:bg-gray-50 hover:border-gray-300"
+                    }`}
+                    onClick={() => setSelectedCategory(category)}
                   >
-                    <Button
-                      variant={
-                        selectedCategory === category ? "default" : "outline"
-                      }
-                      className={`rounded-full px-6 py-2 border-gray-300 bg-white hover:bg-gray-50 hover:border-gray-400 text-gray-700 transition-all duration-200 font-bold ${
-                        selectedCategory === category
-                          ? "bg-blue-500 text-white"
-                          : ""
-                      }`}
-                      onClick={() => setSelectedCategory(category)}
-                    >
-                      {category}
-                    </Button>
-                  </motion.div>
+                    {category}
+                  </Button>
                 ))}
               </div>
             </div>
-          </section>
+            {(search || selectedCategory !== "All") && (
+              <p className="mt-4 pt-4 border-t border-gray-100 text-sm text-gray-500 text-center sm:text-left">
+                Showing {filteredApps.length} matching{" "}
+                {filteredApps.length === 1 ? "app" : "apps"}
+                {selectedCategory !== "All" && (
+                  <span>
+                    {" "}
+                    in <span className="font-medium text-gray-700">{selectedCategory}</span>
+                  </span>
+                )}
+                {search && (
+                  <span>
+                    {" "}
+                    for &ldquo;
+                    <span className="font-medium text-gray-700">{search}</span>
+                    &rdquo;
+                  </span>
+                )}
+              </p>
+            )}
+          </div>
+
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
-            initial={{ opacity: 0, y: 20 }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6"
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.4, duration: 0.6 }}
+            transition={{ duration: 0.4 }}
           >
             {filteredApps.length === 0 ? (
-              <div className="col-span-full text-center text-white text-lg py-8">
-                No apps found.
+              <div className="col-span-full flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-white py-14 px-6 text-center">
+                <Search className="h-10 w-10 text-gray-300 mb-4" />
+                <p className="text-lg font-semibold text-gray-800">
+                  No applications found
+                </p>
+                <p className="text-sm text-gray-500 mt-1 max-w-sm">
+                  Try a different search term or clear your category filter.
+                </p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="mt-5 rounded-full"
+                  onClick={() => {
+                    setSearch("");
+                    setSelectedCategory("All");
+                  }}
+                >
+                  Clear filters
+                </Button>
               </div>
             ) : (
               filteredApps.map((app, index) => (
                 <motion.div
                   key={app.id}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.6 + index * 0.1, duration: 0.4 }}
-                  whileHover={{ y: -8, scale: 1.02 }}
-                  className="group"
+                  transition={{ delay: Math.min(index * 0.05, 0.3), duration: 0.35 }}
+                  whileHover={{ y: -4 }}
+                  className="group h-full"
                 >
-                  <Card className="h-full flex flex-col border-0 shadow-lg hover:shadow-2xl transition-all duration-300 rounded-2xl overflow-hidden bg-white/80 backdrop-blur-sm group-hover:bg-white">
+                  <Card className="h-full flex flex-col border border-gray-200/80 shadow-md hover:shadow-xl hover:border-blue-200/60 transition-all duration-300 rounded-2xl overflow-hidden bg-white group-hover:bg-white">
                     <div
                       className={`h-1 ${app.color} ${app.hoverColor} transition-all duration-300`}
                     />
-                    <CardHeader className="pb-4 pt-6">
-                      <div className="flex items-start space-x-4">
+                    <CardHeader className="pb-3 pt-5 px-5">
+                      <div className="flex items-start gap-3">
                         <div
-                          className={`${app.color} ${app.hoverColor} h-14 w-14 rounded-xl flex items-center justify-center text-white shadow-lg transition-all duration-300 group-hover:scale-110`}
+                          className={`${app.color} h-12 w-12 shrink-0 rounded-xl flex items-center justify-center text-white shadow-md transition-transform duration-300 group-hover:scale-105`}
                         >
                           {app.icon}
                         </div>
-                        <div className="flex-1">
-                          <CardTitle className="text-lg font-bold text-gray-900 group-hover:text-gray-800 transition-colors">
+                        <div className="flex-1 min-w-0 text-left">
+                          <CardTitle className="text-base font-bold text-gray-900 leading-snug line-clamp-2">
                             {app.name}
                           </CardTitle>
-                          <CardDescription className="text-sm font-medium text-gray-500">
+                          <CardDescription className="text-xs font-semibold uppercase tracking-wide text-blue-600/80 mt-1">
                             {app.category}
                           </CardDescription>
                         </div>
                       </div>
                     </CardHeader>
-                    <CardContent className="flex-1 pb-4">
-                      <p className="text-sm font-semibold text-gray-600 leading-relaxed">
+                    <CardContent className="flex-1 px-5 pb-4 pt-0">
+                      <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
                         {app.description}
                       </p>
                     </CardContent>
-                    <CardContent className="pt-0">
+                    <CardContent className="px-5 pb-5 pt-0">
                       <Button
-                        className={`w-full h-12 rounded-xl font-bold transition-all duration-300 ${app.color} ${app.hoverColor} hover:shadow-lg group-hover:shadow-xl`}
+                        className={`w-full h-11 rounded-xl font-semibold transition-all duration-300 ${app.color} text-white hover:opacity-95 hover:shadow-md`}
                         asChild
                       >
                         <a
                           href={app.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center justify-between text-white"
+                          className="flex items-center justify-center gap-2"
                         >
-                          <span>Open App</span>
-                          <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                          <span>Open application</span>
+                          <ChevronRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
                         </a>
                       </Button>
                     </CardContent>
@@ -925,74 +1236,122 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Second Applications Hub */}
-      <section className="py-20 bg-white">
-        <div className="container px-6 mx-auto">
+      <ApplicationHubsDivider />
+
+      {/* Second Applications Hub — E-Commerce */}
+      <section
+        id="ecommerce"
+        className="relative overflow-hidden rounded-2xl sm:rounded-3xl py-14 sm:py-20 scroll-mt-24 shadow-sm ring-1 ring-gray-200/60"
+      >
+        <AbstractSectionBackground
+          patternId="ecommerce-hub-grid"
+          variant="commerce"
+        />
+        <div className="container relative z-10 max-w-7xl px-4 sm:px-6 mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
-            className="text-center mb-12"
+            transition={{ duration: 0.5 }}
+            className="text-center mb-8 sm:mb-10"
           >
-            <h1 className="text-4xl font-bold text-black mb-2">E-COMMERCE</h1>
+            <span className="inline-flex items-center gap-2 px-3 py-1 mb-5 text-xs font-semibold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-100 rounded-full">
+              <ShoppingBag className="h-3.5 w-3.5" />
+              E-Commerce
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+              Brand Stores & Online Shops
+            </h2>
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              Explore SMCT group storefronts and partner e-commerce sites in one
+              place.
+            </p>
+            <p className="mt-3 text-sm font-medium text-emerald-700">
+              {filteredApps2.length}{" "}
+              {filteredApps2.length === 1 ? "store" : "stores"}{" "}
+              {search || selectedCategory !== "All"
+                ? "matching your filters"
+                : "available"}
+            </p>
+            {(search || selectedCategory !== "All") && (
+              <p className="mt-2 text-xs text-gray-500">
+                Filters apply from the search bar above.
+              </p>
+            )}
           </motion.div>
+
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
-            initial={{ opacity: 0, y: 20 }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6"
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.4, duration: 0.6 }}
+            transition={{ duration: 0.4 }}
           >
             {filteredApps2.length === 0 ? (
-              <div className="col-span-full text-center text-black text-lg py-8">
-                No apps found.
+              <div className="col-span-full flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-white/90 py-14 px-6 text-center">
+                <ShoppingBag className="h-10 w-10 text-gray-300 mb-4" />
+                <p className="text-lg font-semibold text-gray-800">
+                  No stores found
+                </p>
+                <p className="text-sm text-gray-500 mt-1 max-w-sm">
+                  Try another search or reset the category filter in the
+                  applications hub above.
+                </p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="mt-5 rounded-full"
+                  onClick={() => {
+                    setSearch("");
+                    setSelectedCategory("All");
+                  }}
+                >
+                  Clear filters
+                </Button>
               </div>
             ) : (
               filteredApps2.map((app, index) => (
                 <motion.div
                   key={app.id}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.6 + index * 0.1, duration: 0.4 }}
-                  whileHover={{ y: -8, scale: 1.02 }}
-                  className="group"
+                  transition={{ delay: Math.min(index * 0.05, 0.3), duration: 0.35 }}
+                  whileHover={{ y: -4 }}
+                  className="group h-full"
                 >
-                  <Card className="h-full flex flex-col border-0 shadow-lg hover:shadow-2xl transition-all duration-300 rounded-2xl overflow-hidden bg-white group-hover:bg-gray-50">
-                    <div
-                      className={`h-1 ${app.color} ${app.hoverColor} transition-all duration-300`}
-                    />
-                    <CardHeader className="pb-4 pt-6">
-                      <div className="flex items-start space-x-4">
-                        <div className="h-14 w-14 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                  <Card className="h-full flex flex-col border border-gray-200/80 shadow-md hover:shadow-xl hover:border-emerald-200/60 transition-all duration-300 rounded-2xl overflow-hidden bg-white/95 backdrop-blur-sm">
+                    <div className={`h-1 ${app.color}`} />
+                    <CardHeader className="pb-3 pt-5 px-5">
+                      <div className="flex items-start gap-3">
+                        <div className="h-12 w-12 shrink-0 flex items-center justify-center rounded-xl border border-gray-100 bg-gray-50 overflow-hidden transition-transform duration-300 group-hover:scale-105">
                           {app.icon}
                         </div>
-                        <div className="flex-1">
-                          <CardTitle className="text-lg font-bold text-gray-900 group-hover:text-gray-800 transition-colors">
+                        <div className="flex-1 min-w-0 text-left">
+                          <CardTitle className="text-base font-bold text-gray-900 leading-snug line-clamp-2">
                             {app.name}
                           </CardTitle>
-                          <CardDescription className="text-sm font-medium text-gray-500">
+                          <CardDescription className="text-xs font-semibold uppercase tracking-wide text-emerald-700/80 mt-1">
                             {app.category}
                           </CardDescription>
                         </div>
                       </div>
                     </CardHeader>
-                    <CardContent className="flex-1 pb-4">
-                      <p className="text-sm font-semibold text-gray-600 leading-relaxed">
+                    <CardContent className="flex-1 px-5 pb-4 pt-0">
+                      <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
                         {app.description}
                       </p>
                     </CardContent>
-                    <CardContent className="pt-0">
+                    <CardContent className="px-5 pb-5 pt-0">
                       <Button
-                        className={`w-full h-12 rounded-xl font-medium transition-all duration-300 ${app.color} ${app.hoverColor} hover:shadow-lg group-hover:shadow-xl`}
+                        className={`w-full h-11 rounded-xl font-semibold transition-all duration-300 ${app.color} text-white hover:opacity-95 hover:shadow-md`}
                         asChild
                       >
                         <a
                           href={app.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center justify-between text-white"
+                          className="flex items-center justify-center gap-2"
                         >
-                          <span>Open App</span>
-                          <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                          <span>Visit store</span>
+                          <ChevronRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
                         </a>
                       </Button>
                     </CardContent>
@@ -1003,484 +1362,547 @@ export default function LandingPage() {
           </motion.div>
         </div>
       </section>
+      </div>
 
-      {/* Featured Articles Section */}
-      <section className="py-20 bg-white">
-        <div className="container px-6 mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <span className="inline-block px-4 py-1 bg-blue-200 text-blue-800 rounded-full font-semibold text-xs mb-3 tracking-widest shadow-sm">
-              FEATURED
-            </span>
-            <h1 className="text-4xl font-extrabold text-blue-900 mb-2 drop-shadow">
-              Featured Articles
-            </h1>
-            <p className="text-lg text-blue-700 max-w-2xl mx-auto font-medium">
-              Get inspired by our latest stories, insights, and highlights from
-              the world of SMCT and its partners.
-            </p>
-          </motion.div>
-          <div className="flex flex-col gap-10">
-            {featuredArticles.length === 0 ? (
-              <div className="col-span-full text-center text-black text-lg py-8">
-                No featured articles found.
-              </div>
-            ) : (
-              featuredArticles.map((article, index) => (
-                <motion.div
-                  key={article.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.6 + index * 0.1, duration: 0.4 }}
-                  whileHover={{ y: -4, scale: 1.01 }}
-                  className="group"
-                >
-                  <div className="flex flex-col md:flex-row bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border border-blue-100 group-hover:bg-blue-50">
-                    <div className="md:w-1/3 flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-200 p-6 md:p-0">
-                      <img
-                        src={article.image}
-                        alt={article.name}
-                        className="object-contain w-40 h-40 md:w-56 md:h-56 rounded-2xl shadow-md border border-blue-200"
-                      />
-                    </div>
-                    <div className="flex-1 p-6 flex flex-col justify-between">
-                      <div>
-                        <span className="inline-block px-3 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold mb-2">
-                          {article.category}
-                        </span>
-                        <h2 className="text-2xl font-bold text-blue-900 mb-2 group-hover:text-blue-700 transition-colors">
-                          {article.name}
-                        </h2>
-                        <p className="text-base text-gray-700 mb-4 font-medium">
-                          {article.excerpt}
-                        </p>
-                      </div>
-                      <div>
-                        <a
-                          href={article.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full shadow-md transition-all duration-200 text-lg group-hover:scale-105"
-                        >
-                          Read Article
-                          <ChevronRight className="ml-2 h-5 w-5" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))
-            )}
-          </div>
-        </div>
-      </section>
+      <div className="bg-gradient-to-b from-gray-100 via-slate-100/90 to-gray-100 px-3 sm:px-5 lg:px-8 py-8 sm:py-12 lg:py-14 flex flex-col gap-8 sm:gap-10 lg:gap-12">
+        <FeaturedArticlesDivider />
 
-      {/* About Us Section */}
-      <section className="py-24 bg-white">
-        <div className="container mx-auto px-6">
-          {/* Hero Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="max-w-6xl mx-auto text-center mb-20"
-          ></motion.div>
-
-          {/* Company Overview */}
-          <div className="flex flex-col md:flex-row gap-12 items-center mb-20">
+        {/* Featured Articles Section */}
+        <section
+          id="featured-articles"
+          className="relative overflow-hidden rounded-2xl sm:rounded-3xl py-14 sm:py-20 scroll-mt-24 shadow-sm ring-1 ring-gray-200/60"
+        >
+          <AbstractSectionBackground
+            patternId="articles-hub-grid"
+            variant="articles"
+          />
+          <div className="container relative z-10 max-w-7xl px-4 sm:px-6 mx-auto">
             <motion.div
-              className="md:w-1/2"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-center mb-8 sm:mb-10"
             >
-              <Image
-                src="/smct.png"
-                alt="SMCT Logo"
-                width={500}
-                height={500}
-                className="rounded-xl shadow-xl"
-              />
-            </motion.div>
-            <motion.div
-              className="md:w-1/2"
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <h3 className="text-3xl font-bold text-blue-800 mb-6">
-                ABOUT US
-              </h3>
-              <div className="space-y-4 text-gray-700 font-semibold">
-                <p>
-                  Strong Moto Centrum, Inc. operates as a multi-brand
-                  motorcycle, appliances, and tri-wheeler dealership, aiming to
-                  be one of the leading dealers in the Philippines.
-                </p>
-                <p>
-                  Our branches in major cities like Cavite, Laguna, Cebu, Davao,
-                  Cagayan de Oro, Zamboanga, and other areas in Luzon, Visayas,
-                  and Mindanao are open to cater to our customer`s needs. With
-                  over 30 branches nationwide, we are always ready to give you
-                  the best motorcycles and appliances that will suit your needs.
-                </p>
-                <p>
-                  At present, we are increasing our efforts in expanding to
-                  reach a larger number of customers to help bring comfort to
-                  their homes, as we continue to offer quality service and
-                  improve customer experience.
-                </p>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Vision, Mission, and Goals Section */}
-      <section className="py-24 bg-white">
-        {/* Decorative elements */}
-        <div className="absolute top-0 left-0 w-full h-full opacity-10">
-          <div className="absolute top-20 left-10 w-40 h-40 bg-blue-500 rounded-full filter blur-3xl"></div>
-          <div className="absolute bottom-10 right-20 w-60 h-60 bg-blue-500 rounded-full filter blur-3xl"></div>
-          <div className="absolute top-1/2 right-1/4 w-32 h-32 bg-blue-500 rounded-full filter blur-3xl"></div>
-        </div>
-
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-center mb-20"
-          >
-            <div className="inline-flex items-center mb-4">
-              <span className="h-px w-16 bg-blue-400 mr-4"></span>
-              <span className="text-blue-400 font-medium tracking-wider">
-                OUR PURPOSE
+              <span className="inline-flex items-center gap-2 px-3 py-1 mb-5 text-xs font-semibold uppercase tracking-wider text-blue-800 bg-blue-50 border border-blue-100 rounded-full">
+                <FileText className="h-3.5 w-3.5 text-blue-600" />
+                Featured
               </span>
-              <span className="h-px w-16 bg-blue-400 ml-4"></span>
-            </div>
-            <h2 className="text-5xl font-bold text-black mb-6">
-              Vision, Mission <span className="text-blue-400">&</span> Goals
-            </h2>
-            <p className="text-xl text-black max-w-3xl mx-auto leading-relaxed">
-              Empowering businesses through innovative technology solutions that
-              drive growth, efficiency, and sustainable success.
-            </p>
-          </motion.div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-900 mb-3">
+                News & Highlights
+              </h2>
+              <p className="text-sm sm:text-base md:text-lg text-blue-700 max-w-2xl mx-auto leading-relaxed">
+                Latest stories and updates from SMCT brands and partner
+                companies.
+              </p>
+              <p className="mt-3 text-sm font-semibold text-blue-600">
+                {featuredArticles.length}{" "}
+                {featuredArticles.length === 1 ? "article" : "articles"}
+              </p>
+            </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            {/* Vision */}
+            <div className="flex flex-col gap-5 sm:gap-6">
+              {featuredArticles.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-blue-200 bg-white/90 py-14 px-6 text-center">
+                  <FileText className="h-10 w-10 text-blue-300 mx-auto mb-4" />
+                  <p className="text-lg font-semibold text-blue-900">
+                    No articles available
+                  </p>
+                  <p className="text-sm text-blue-600/80 mt-1">
+                    Check back later for company news and updates.
+                  </p>
+                </div>
+              ) : (
+                featuredArticles.map((article, index) => (
+                  <motion.article
+                    key={article.id}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      delay: Math.min(index * 0.08, 0.32),
+                      duration: 0.35,
+                    }}
+                    whileHover={{ y: -3 }}
+                    className="group"
+                  >
+                    <div className="flex flex-col sm:flex-row overflow-hidden rounded-2xl border border-blue-100/80 bg-white/95 backdrop-blur-sm shadow-md hover:shadow-xl hover:border-blue-300/60 transition-all duration-300">
+                      <div className="relative sm:w-[220px] md:w-[260px] shrink-0 bg-gradient-to-br from-blue-50 to-blue-100/80 p-5 sm:p-6 flex items-center justify-center">
+                        <div className="relative h-36 w-full sm:h-40 max-w-[200px] mx-auto">
+                          <Image
+                            src={article.image}
+                            alt={article.name}
+                            fill
+                            className="object-contain drop-shadow-md"
+                            sizes="(max-width: 640px) 200px, 260px"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex flex-1 flex-col justify-between p-5 sm:p-6 min-w-0 text-left">
+                        <div>
+                          <span className="inline-block px-2.5 py-0.5 mb-2 text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-blue-700 bg-blue-50 border border-blue-100 rounded-full">
+                            {article.category}
+                          </span>
+                          <h3 className="text-lg sm:text-xl font-bold text-blue-900 mb-2 leading-snug group-hover:text-blue-700 transition-colors">
+                            {article.name}
+                          </h3>
+                          <p className="text-sm text-blue-800/85 leading-relaxed line-clamp-3 sm:line-clamp-4">
+                            {article.excerpt}
+                          </p>
+                        </div>
+                        <div className="mt-4 sm:mt-5">
+                          <a
+                            href={article.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-colors w-full sm:w-auto"
+                          >
+                            Read article
+                            <ChevronRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.article>
+                ))
+              )}
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div className="bg-gradient-to-b from-gray-100 via-slate-100/90 to-gray-100 px-3 sm:px-5 lg:px-8 py-8 sm:py-12 lg:py-14 flex flex-col gap-8 sm:gap-10 lg:gap-12">
+        <AboutSectionDivider />
+
+        {/* About Us + Vision / Mission / Values */}
+        <section
+          id="about"
+          className="relative overflow-hidden rounded-2xl sm:rounded-3xl py-14 sm:py-20 scroll-mt-24 shadow-sm ring-1 ring-gray-200/60"
+        >
+          <AbstractSectionBackground
+            patternId="about-hub-grid"
+            variant="internal"
+          />
+          <div className="container relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="group"
+              transition={{ duration: 0.5 }}
+              className="text-center mb-10 sm:mb-12"
             >
-              <Card className="h-full border border-gray-300 shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 rounded-3xl overflow-hidden bg-gray-300/50 backdrop-blur-sm hover:border-blue-400">
-                <CardHeader className="pb-0 pt-8 px-8">
-                  <div className="flex items-center space-x-5 mb-6">
-                    <div className="bg-gradient-to-br from-blue-400 to-blue-500 h-14 w-14 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
-                      <Sparkles className="w-7 h-7" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-2xl font-bold text-black ">
+              <span className="inline-flex items-center gap-2 px-3 py-1 mb-5 text-xs font-semibold uppercase tracking-wider text-blue-800 bg-blue-50 border border-blue-100 rounded-full">
+                <Building2 className="h-3.5 w-3.5 text-blue-600" />
+                About SMCT
+              </span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-900 mb-3">
+                Who We Are
+              </h2>
+              <p className="text-sm sm:text-base text-blue-700 max-w-2xl mx-auto leading-relaxed">
+                Strong Moto Centrum, Inc. — serving communities across the
+                Philippines with quality vehicles and appliances.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="rounded-2xl border border-blue-100/80 bg-white/95 backdrop-blur-sm shadow-md p-6 sm:p-8 lg:p-10 mb-12 sm:mb-16"
+            >
+              <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
+                <div className="w-full lg:w-2/5 flex justify-center">
+                  <Image
+                    src="/smct.png"
+                    alt="SMCT Logo"
+                    width={400}
+                    height={400}
+                    className="w-full max-w-xs sm:max-w-sm object-contain drop-shadow-lg"
+                  />
+                </div>
+                <div className="w-full lg:w-3/5 text-left">
+                  <h3 className="text-xl sm:text-2xl font-bold text-blue-900 mb-4">
+                    About Us
+                  </h3>
+                  <div className="space-y-4 text-sm sm:text-base text-blue-800/90 leading-relaxed">
+                    <p>
+                      Strong Moto Centrum, Inc. operates as a multi-brand
+                      motorcycle, appliances, and tri-wheeler dealership, aiming
+                      to be one of the leading dealers in the Philippines.
+                    </p>
+                    <p>
+                      Our branches in major cities like Cavite, Laguna, Cebu,
+                      Davao, Cagayan de Oro, Zamboanga, and other areas in Luzon,
+                      Visayas, and Mindanao are open to cater to our
+                      customers&apos; needs. With over 30 branches nationwide, we
+                      are always ready to give you the best motorcycles and
+                      appliances that will suit your needs.
+                    </p>
+                    <p>
+                      At present, we are increasing our efforts in expanding to
+                      reach a larger number of customers to help bring comfort to
+                      their homes, as we continue to offer quality service and
+                      improve customer experience.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="text-center mb-8 sm:mb-10"
+            >
+              <div className="inline-flex items-center gap-3 mb-4">
+                <span className="h-px w-10 sm:w-16 bg-blue-300" />
+                <span className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-blue-600">
+                  Our purpose
+                </span>
+                <span className="h-px w-10 sm:w-16 bg-blue-300" />
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-bold text-blue-900 mb-3">
+                Vision, Mission & Values
+              </h3>
+              <p className="text-sm sm:text-base text-blue-700 max-w-2xl mx-auto">
+                Empowering businesses through innovative technology solutions that
+                drive growth, efficiency, and sustainable success.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4 }}
+                className="group h-full"
+              >
+                <Card className="h-full border border-blue-100/80 bg-white/95 shadow-md hover:shadow-lg hover:border-blue-300/60 transition-all rounded-2xl overflow-hidden">
+                  <CardHeader className="pb-2 pt-6 px-6">
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 shrink-0 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white shadow-md">
+                        <Sparkles className="w-6 h-6" />
+                      </div>
+                      <CardTitle className="text-lg font-bold text-blue-900">
                         Our Vision
                       </CardTitle>
                     </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="pb-8 px-8">
-                  <p className="text-black leading-relaxed text-lg">
-                    to become the leader on the philipines vehivle and applaince
-                    industry, We believe in imporoving the quality of life of
-                    Filipinos both insde and outside their homes.
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
+                  </CardHeader>
+                  <CardContent className="pb-6 px-6 pt-0">
+                    <p className="text-sm text-blue-800/90 leading-relaxed">
+                      To become the leader in the Philippines vehicle and
+                      appliance industry. We believe in improving the quality of
+                      life of Filipinos both inside and outside their homes.
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
 
-            {/* Mission */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.6, duration: 0.8 }}
-              className="group"
-            >
-              <Card className="h-full border border-gray-300  shadow-2xl hover:shadow-green-500/20 transition-all duration-500 rounded-3xl overflow-hidden bg-gray-300/50 backdrop-blur-sm hover:border-blue-400">
-                <CardHeader className="pb-0 pt-8 px-8">
-                  <div className="flex items-center space-x-5 mb-6">
-                    <div className="bg-gradient-to-br from-blue-400 to-blue-500 h-14 w-14 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
-                      <Rocket className="w-7 h-7" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-2xl font-bold text-black">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45 }}
+                className="group h-full"
+              >
+                <Card className="h-full border border-blue-100/80 bg-white/95 shadow-md hover:shadow-lg hover:border-blue-300/60 transition-all rounded-2xl overflow-hidden">
+                  <CardHeader className="pb-2 pt-6 px-6">
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 shrink-0 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white shadow-md">
+                        <Rocket className="w-6 h-6" />
+                      </div>
+                      <CardTitle className="text-lg font-bold text-blue-900">
                         Our Mission
                       </CardTitle>
                     </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="pb-8 px-8">
-                  <p className="text-black leading-relaxed text-lg text-bold">
-                    We offer quality technology and excellent services that qre
-                    affordable and accessible to all Filipinos.
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
+                  </CardHeader>
+                  <CardContent className="pb-6 px-6 pt-0">
+                    <p className="text-sm text-blue-800/90 leading-relaxed">
+                      We offer quality technology and excellent services that are
+                      affordable and accessible to all Filipinos.
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
 
-            {/* Goals */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.8, duration: 0.8 }}
-              className="group"
-            >
-              <Card className="h-full border border-gray-300 shadow-2xl  hover:shadow-yellow-500/20 transition-all duration-500 rounded-3xl overflow-hidden bg-gray-300/50 backdrop-blur-sm hover:border-blue-400">
-                <CardHeader className="pb-0 pt-8 px-8">
-                  <div className="flex items-center space-x-5 mb-6">
-                    <div className="bg-gradient-to-br from-blue-400 to-blue-500 h-14 w-14 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
-                      <Target className="w-7 h-7" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-2xl font-bold text-black">
-                        Values
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="group h-full md:col-span-2 lg:col-span-1"
+              >
+                <Card className="h-full border border-blue-100/80 bg-white/95 shadow-md hover:shadow-lg hover:border-blue-300/60 transition-all rounded-2xl overflow-hidden">
+                  <CardHeader className="pb-2 pt-6 px-6">
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 shrink-0 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white shadow-md">
+                        <Target className="w-6 h-6" />
+                      </div>
+                      <CardTitle className="text-lg font-bold text-blue-900">
+                        L.E.A.D.E.R. Values
                       </CardTitle>
                     </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="pb-8 px-8">
-                  <p className="text-black leading-relaxed text-lg">
-                    Every interaction with our customers, partner, and employee
-                    is guided with being a L.E.A.D.E.R in mind
-                  </p>
-                  <ul className="text-black leading-relaxed text-lg space-y-3">
-                    <li className="flex items-start">
-                      <span className="text-blue-600 mr-3 mt-1">✓</span>
-                      <span>
-                        L- Loyalty -We are dedicated to our company,customer,and
-                        co-workers.
-                      </span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-blue-600 mr-3 mt-1">✓</span>
-                      <span>
-                        E- Expertise -We are professinals on the job and in our
-                        field.
-                      </span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-blue-600 mr-3 mt-1">✓</span>
-                      <span>
-                        A- Accountability -We take ownership of our work.
-                      </span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-blue-600 mr-3 mt-1">✓</span>
-                      <span>D- Diligence -We work hard and perservere.</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-blue-600 mr-3 mt-1">✓</span>
-                      <span>
-                        E- Efficiency -We make the best use of our time and
-                        energy in the service of our customers.
-                      </span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-blue-600 mr-3 mt-1">✓</span>
-                      <span>
-                        R- Respect -We hold our company, co-workers, customer,
-                        and partners in high regard.
-                      </span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </motion.div>
+                  </CardHeader>
+                  <CardContent className="pb-6 px-6 pt-0">
+                    <p className="text-sm text-blue-800/90 leading-relaxed mb-4">
+                      Every interaction with our customers, partners, and
+                      employees is guided by being a L.E.A.D.E.R.
+                    </p>
+                    <ul className="space-y-2.5 text-sm text-blue-800/90">
+                      {[
+                        "L — Loyalty: dedicated to our company, customers, and co-workers.",
+                        "E — Expertise: professionals on the job and in our field.",
+                        "A — Accountability: we take ownership of our work.",
+                        "D — Diligence: we work hard and persevere.",
+                        "E — Efficiency: best use of time and energy in service of customers.",
+                        "R — Respect: we hold our company, co-workers, customers, and partners in high regard.",
+                      ].map((item) => (
+                        <li key={item} className="flex items-start gap-2">
+                          <span className="text-blue-600 font-bold shrink-0">
+                            ✓
+                          </span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
           </div>
-        </div>
-      </section>
-      <div>
-        {/* Contact Section */}
-        <motion.div
-          className="py-24 bg-white text-black max-w-full mx-auto"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <h3 className="text-5xl font-bold mb-30 text-center">Get In Touch</h3>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-75 w-full max-w-4xl mx-auto">
+        </section>
+      </div>
 
-            <div className="flex flex-col items-center text-center flex-1 min-w-[220px]">
-              <div className="bg-blue-500 p-4 rounded-full mb-4">
-                <FiMapPin className="w-10 h-10 text-white" />
+      <div className="bg-gradient-to-b from-gray-100 via-slate-100/90 to-gray-100 px-3 sm:px-5 lg:px-8 py-8 sm:py-12 lg:py-14 flex flex-col gap-8 sm:gap-10 lg:gap-12">
+        <ContactSectionDivider />
+
+        {/* Contact Section */}
+        <section
+          id="contact"
+          className="relative overflow-hidden rounded-2xl sm:rounded-3xl py-14 sm:py-20 scroll-mt-24 shadow-sm ring-1 ring-gray-200/60"
+        >
+          <AbstractSectionBackground
+            patternId="contact-hub-grid"
+            variant="internal"
+          />
+          <motion.div
+            className="container relative z-10 max-w-7xl mx-auto px-4 sm:px-6"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="text-center mb-10 sm:mb-12">
+              <span className="inline-flex items-center gap-2 px-3 py-1 mb-5 text-xs font-semibold uppercase tracking-wider text-blue-800 bg-blue-50 border border-blue-100 rounded-full">
+                <LifeBuoy className="h-3.5 w-3.5 text-blue-600" />
+                Contact
+              </span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-900 mb-3">
+                Get In Touch
+              </h2>
+              <p className="text-sm sm:text-base text-blue-700 max-w-2xl mx-auto">
+                Reach our team or visit us — we&apos;re here to help.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-5xl mx-auto mb-12 sm:mb-16">
+              <div className="flex flex-col items-center text-center rounded-2xl border border-blue-100/80 bg-white/95 backdrop-blur-sm shadow-md p-6 sm:p-7 hover:shadow-lg hover:border-blue-200/60 transition-all">
+                <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-3.5 rounded-full mb-4 shadow-md">
+                  <FiMapPin className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="font-bold text-lg text-blue-900 mb-2">Location</h4>
+                <p className="text-sm text-blue-800/90 leading-relaxed">
+                  J.A. Clarin St, Tagbilaran City, Bohol
+                </p>
               </div>
-              <h4 className="font-bold text-2xl mb-2">Location</h4>
-              <p>J.A. Clarin St, Tagbilaran City, Bohol</p>
-            </div>
-            <div className="flex flex-col items-center text-center flex-1 min-w-[216px]">
-              <div className="bg-blue-500 p-4 rounded-full mb-4">
-                <FiPhone className="w-10 h-10 text-white" />
+
+              <div className="flex flex-col items-center text-center rounded-2xl border border-blue-100/80 bg-white/95 backdrop-blur-sm shadow-md p-6 sm:p-7 hover:shadow-lg hover:border-blue-200/60 transition-all">
+                <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-3.5 rounded-full mb-4 shadow-md">
+                  <FiPhone className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="font-bold text-lg text-blue-900 mb-2">Contact</h4>
+                <a
+                  href="tel:+639701929564"
+                  className="text-sm font-semibold text-blue-700 hover:text-blue-900 transition-colors"
+                >
+                  (+63) 970 192 9564
+                </a>
+                <a
+                  href="mailto:info@smctgroup.ph"
+                  className="text-sm text-blue-600/90 hover:text-blue-800 mt-1 transition-colors"
+                >
+                  info@smctgroup.ph
+                </a>
               </div>
-              <h4 className="font-bold text-2xl mb-3">Contact</h4>
-              <p>(+63) 970 192 9564</p>
-              <p>info@smctgroup.ph</p>
-            </div>
-            <div className="flex flex-col items-center text-center flex-1 min-w-[216px]">
-              <div className="bg-blue-500 p-4 rounded-full mb-4">
-                <SiFacebook className="w-10 h-10 text-white" />
+
+              <div className="flex flex-col items-center text-center rounded-2xl border border-blue-100/80 bg-white/95 backdrop-blur-sm shadow-md p-6 sm:p-7 hover:shadow-lg hover:border-blue-200/60 transition-all">
+                <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-3.5 rounded-full mb-4 shadow-md">
+                  <SiFacebook className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="font-bold text-lg text-blue-900 mb-2">Facebook</h4>
+                <a
+                  href="https://www.facebook.com/StrongMotoCentrumInc/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-semibold text-blue-700 hover:text-blue-900 transition-colors line-clamp-2"
+                >
+                  STRONG MOTO CENTRUM, INC.
+                </a>
               </div>
-              <h4 className="font-bold text-2xl mb-3">Facebook page :</h4>
-              <a
-                href="https://www.facebook.com/StrongMotoCentrumInc/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline font-semibold"
-              >
-                STRONG MOTO CENTRUM,INC.
-              </a>
             </div>
-          </div>
-          {/* Map below contact info */}
-          <div className="flex flex-col items-center mt-32">
-            <h3 className="text-4xl font-bold mb-10 text-center">Our Branches Location</h3>
-            <div className="bg-white rounded-2xl shadow-lg border border-blue-200 p-2 flex items-center justify-center" style={{ width: '1400px', height: '800px' }}>
-              <iframe
-                src="https://www.google.com/maps/d/embed?mid=1vdJPRYaAKd4Igt2lbbicIMcXmes&hl=en&ehbc=2E312F"
-                width="100%"
-                height="100%"
-                className="rounded-xl border-0"
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
+
+            <div className="max-w-6xl mx-auto">
+              <h3 className="text-xl sm:text-2xl font-bold text-blue-900 mb-6 text-center">
+                Our Branches Location
+              </h3>
+              <div className="w-full rounded-2xl shadow-lg border border-blue-200/80 bg-white/95 p-2 sm:p-3 aspect-[16/10] max-h-[min(70vh,520px)]">
+                <iframe
+                  src="https://www.google.com/maps/d/embed?mid=1vdJPRYaAKd4Igt2lbbicIMcXmes&hl=en&ehbc=2E312F"
+                  title="SMCT branches map"
+                  className="h-full w-full min-h-[240px] rounded-xl border-0"
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </section>
       </div>
 
       {/* Footer */}
-      <footer className="mt-0 bg-gradient-to-r from-blue-600 to-blue-700 backdrop-blur-md border-t border-blue-400/30 py-14">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            {/* Logo and Branding */}
+      <footer className="relative overflow-hidden border-t border-blue-400/25 bg-gradient-to-br from-blue-700 via-blue-600 to-blue-800">
+        <div
+          className="absolute inset-0 opacity-[0.07] pointer-events-none"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+            backgroundSize: "24px 24px",
+          }}
+          aria-hidden
+        />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-14">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-8">
             <motion.div
-              className="flex items-center space-x-4 mb-8 md:mb-0"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              className="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col items-center sm:items-start text-center sm:text-left gap-4"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.2, duration: 0.6 }}
+              transition={{ duration: 0.4 }}
             >
-              <div className="relative">
-                <div className="absolute -inset-2 bg-white/20 rounded-xl blur-md"></div>
-                <Image
-                  src="/smct.png"
-                  alt="SMCT Application Center Logo"
-                  width={80}
-                  height={80}
-                  className="relative z-10 drop-shadow-lg"
-                />
-              </div>
+              <Image
+                src="/smct.png"
+                alt="SMCT Application Center"
+                width={72}
+                height={72}
+                className="h-16 w-16 sm:h-[72px] sm:w-[72px] object-contain shrink-0 drop-shadow-lg"
+              />
               <div>
-                <span className="text-xl font-bold text-white tracking-tight">
+                <p className="text-lg sm:text-xl font-bold text-white tracking-tight">
                   SMCT Application Center
-                </span>
-                <p className="text-sm text-blue-100 mt-1">
+                </p>
+                <p className="text-sm text-blue-100/90 mt-1">
                   Powered by SMCT Group
+                </p>
+                <p className="text-xs text-blue-200/80 mt-3 max-w-sm leading-relaxed">
+                  Your centralized hub for internal tools, e-commerce stores, and
+                  company resources.
                 </p>
               </div>
             </motion.div>
 
-            {/* Navigation Links */}
-            <div className="flex flex-col sm:flex-row items-center gap-8">
-              <div className="w-full flex flex-col items-center sm:items-start mb-4">
-                <div className="w-full flex items-center justify-center sm:justify-start mb-2">
-                  <span className="text-white font-bold text-xl tracking-wide">
-                    Made with ♥️ by:
-                  </span>
-                  <span className="ml-2 px-3 py-1 rounded-full bg-gradient-to-r from-yellow-300 to-yellow-500 text-black font-semibold shadow-md">
-                    SMCT Dev Team
-                  </span>
-                </div>
-                <div className="w-full flex items-center justify-center sm:justify-start">
-                  <span className="block w-82 h-1 bg-gradient-to-r from-yellow-400 to-yellow-700 rounded-full opacity-60"></span>
-                </div>
-              </div>
-              <div className="flex flex-row flex-wrap gap-3 justify-center sm:justify-start w-full mb-1">
-                {devs.map((dev) => (
-                  <motion.div
-                    key={dev.link}
-                    whileHover={{ scale: 1.08 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="group cursor-pointer flex flex-col items-center"
-                  >
+            <motion.nav
+              className="lg:col-span-3 flex flex-col items-center lg:items-start"
+              aria-label="Footer navigation"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.05 }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider text-blue-200 mb-4">
+                Quick links
+              </p>
+              <ul className="flex flex-col gap-2.5 text-sm font-medium text-white/95">
+                {[
+                  { label: "Applications", href: "#applications" },
+                  { label: "E-Commerce", href: "#ecommerce" },
+                  { label: "News & Highlights", href: "#featured-articles" },
+                  { label: "About Us", href: "#about" },
+                  { label: "Contact", href: "#contact" },
+                ].map((link) => (
+                  <li key={link.href}>
                     <a
-                      href={dev.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex flex-col items-center space-y-1 transition-all duration-300"
+                      href={link.href}
+                      className="hover:text-blue-200 transition-colors inline-flex items-center gap-1"
                     >
-                      <div className="bg-white/20 p-1 rounded-full group-hover:bg-blue-500/80 transition-colors duration-300 shadow-md">
-                        <Avatar>
-                          {dev.avatar ? (
-                            <AvatarImage src={dev.avatar} alt={dev.name} />
-                          ) : (
-                            <AvatarFallback>
-                              {dev.name.charAt(4)}
-                            </AvatarFallback>
-                          )}
-                        </Avatar>
-                      </div>
-                      <span className="text-white font-medium text-sm group-hover:text-blue-200 transition-colors duration-200">
-                        {dev.name}
-                      </span>
+                      <ChevronRight className="h-3.5 w-3.5 opacity-70" />
+                      {link.label}
                     </a>
-                  </motion.div>
+                  </li>
+                ))}
+              </ul>
+            </motion.nav>
+
+            <motion.div
+              className="lg:col-span-4 rounded-2xl border border-white/15 bg-white/10 backdrop-blur-sm p-5 sm:p-6"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+            >
+              <div className="flex flex-col items-center sm:items-start text-center sm:text-left mb-4">
+                <p className="text-sm font-bold text-white">
+                  Made with{" "}
+                  <span className="text-red-300" aria-label="love">
+                    ♥
+                  </span>{" "}
+                  by
+                </p>
+                <span className="mt-2 inline-block px-3 py-1 rounded-full bg-gradient-to-r from-amber-300 to-amber-400 text-blue-950 text-xs font-bold shadow-sm">
+                  SMCT Dev Team
+                </span>
+                <span className="mt-3 block h-0.5 w-full max-w-[12rem] bg-gradient-to-r from-amber-400/80 to-transparent rounded-full" />
+              </div>
+              <div className="flex flex-wrap justify-center sm:justify-start gap-4">
+                {devs.map((dev) => (
+                  <a
+                    key={dev.link}
+                    href={dev.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex flex-col items-center gap-1.5"
+                  >
+                    <div className="rounded-full p-0.5 ring-2 ring-white/20 group-hover:ring-white/50 transition-all">
+                      <Avatar className="h-11 w-11">
+                        {dev.avatar ? (
+                          <AvatarImage src={dev.avatar} alt={dev.name} />
+                        ) : (
+                          <AvatarFallback className="bg-blue-500 text-white text-xs">
+                            {dev.name.charAt(4)}
+                          </AvatarFallback>
+                        )}
+                      </Avatar>
+                    </div>
+                    <span className="text-[11px] sm:text-xs font-medium text-blue-100 group-hover:text-white transition-colors">
+                      {dev.name}
+                    </span>
+                  </a>
                 ))}
               </div>
-
-              {/* Additional Social Links */}
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="group cursor-pointer hidden sm:flex"
-              ></motion.div>
-            </div>
+            </motion.div>
           </div>
 
-          {/* Copyright and Additional Links */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="mt-12 pt-6 border-t border-blue-500/30 flex flex-col md:flex-row justify-between items-center"
-          >
-            <p className="text-blue-100 text-sm mb-4 md:mb-0">
-              © {new Date().getFullYear()} SMCT Application Center. All rights
-              reserved.
+          <div className="mt-10 pt-6 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+            <p className="text-xs sm:text-sm text-blue-100/90">
+              © <span suppressHydrationWarning>{new Date().getFullYear()}</span>{" "}
+              SMCT Application Center. All rights reserved.
             </p>
-          </motion.div>
+            
+          </div>
         </div>
       </footer>
-
-      <motion.div
-        className="flex space-x-8"
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 2.2, duration: 0.6 }}
-      ></motion.div>
       {/* Help Modal */}
       {showHelpModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-transparent backdrop-blur-sm">
@@ -1512,163 +1934,186 @@ export default function LandingPage() {
           </div>
         </div>
       )}
-      {/* Feedback Button */}
-      <div className="fixed bottom-6 right-6 z-50 group">
-        <button
-          className="bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white rounded-full p-5 shadow-2xl focus:outline-none focus:ring-4 focus:ring-blue-300/60 transition-all duration-200 transform hover:scale-110 active:scale-95 group hover:shadow-blue-400/40 hover:shadow-lg flex items-center justify-center"
-          onClick={() => setShowFeedbackModal(true)}
-          aria-label="Send Feedback"
-          type="button"
-        >
-          {/* Chat bubble icon, larger and centered */}
-          <svg
-            className="w-8 h-8 group-hover:animate-bounce mx-auto"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.2"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8l-4.28 1.07A1 1 0 013 19.13l1.07-4.28A8.96 8.96 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+      <FeedbackFloatingButton
+        showFeedbackModal={showFeedbackModal}
+        onToggle={() => setShowFeedbackModal((open) => !open)}
+      />
+
+      <AnimatePresence>
+        {showFeedbackModal && (
+          <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-4 sm:p-6">
+            <motion.button
+              type="button"
+              aria-label="Close feedback dialog"
+              className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={() => setShowFeedbackModal(false)}
             />
-          </svg>
-          <span className="ml-2 font-semibold text-white text-base hidden sm:inline">
-            Send Feedback
-          </span>
-        </button>
-      </div>
-      {/* Feedback Modal */}
-      {showFeedbackModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-          <div className="bg-gradient-to-br from-blue-50 via-white to-blue-100 rounded-2xl shadow-2xl p-0 max-w-md w-full relative overflow-hidden">
-            {/* Modal Header */}
-            <div className="flex items-center gap-3 px-8 pt-8 pb-4 border-b border-blue-100">
-              <div className="bg-blue-600 rounded-full p-2 flex items-center justify-center">
-                <svg
-                  className="w-7 h-7 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8l-4.28 1.07A1 1 0 013 19.13l1.07-4.28A8.96 8.96 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                  />
-                </svg>
-              </div>
-              <div>
-                <h2 className="text-xl font-bold text-blue-700">
-                  Send Feedback
-                </h2>
-                <p className="text-xs text-blue-500 font-medium">
-                  We value your feedback! Let us know how we can improve.
-                </p>
-              </div>
-              <button
-                className="absolute top-3 right-4 text-gray-400 hover:text-blue-700 text-2xl font-bold focus:outline-none"
-                onClick={() => setShowFeedbackModal(false)}
-                aria-label="Close"
-                type="button"
-              >
-                &times;
-              </button>
-            </div>
-            <div className="px-8 py-6">
-              {feedbackSubmitted ? (
-                <div className="flex flex-col items-center justify-center py-8">
-                  {/* Animated checkmark */}
-                  <svg
-                    className="w-16 h-16 text-green-500 mb-4 animate-bounce"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                  <div className="text-green-700 font-bold text-lg text-center">
-                    Thank you for your feedback!
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="feedback-dialog-title"
+              className="relative w-full max-w-md overflow-hidden rounded-2xl border border-blue-100/80 bg-white shadow-2xl"
+              initial={{ opacity: 0, y: 48, scale: 0.92 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 32, scale: 0.94 }}
+              transition={{
+                type: "spring",
+                damping: 26,
+                stiffness: 320,
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="bg-gradient-to-r from-blue-600 to-blue-500 px-5 sm:px-6 py-5 text-white">
+                <div className="flex items-start gap-3 pr-8">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/15">
+                    <MessageCircle className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h2 id="feedback-dialog-title" className="text-lg font-bold">
+                      Send Feedback
+                    </h2>
+                    <p className="text-xs text-blue-100 mt-0.5 leading-relaxed">
+                      Help us improve the SMCT Application Center.
+                    </p>
                   </div>
                 </div>
-              ) : (
-                <form
-                  onSubmit={handleFeedbackSubmit}
-                  className="flex flex-col gap-5"
+                <button
+                  type="button"
+                  className="absolute top-4 right-4 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white/15 text-white hover:bg-white/25 transition-colors"
+                  onClick={() => setShowFeedbackModal(false)}
+                  aria-label="Close"
                 >
-                  <div>
-                    <textarea
-                      required
-                      maxLength={maxFeedbackLength}
-                      className="border-2 border-blue-200 rounded-xl p-3 w-full min-h-[90px] text-base focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all resize-none shadow-sm"
-                      placeholder="Your feedback..."
-                      value={feedbackText}
-                      onChange={(e) => setFeedbackText(e.target.value)}
-                      aria-label="Your feedback"
-                      disabled={feedbackLoading}
-                    />
-                    <div className="flex justify-end text-xs text-blue-400 mt-1">
-                      {feedbackText.length}/{maxFeedbackLength}
-                    </div>
-                  </div>
-                  <input
-                    type="email"
-                    className="border-2 border-blue-200 rounded-xl p-3 w-full text-base focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all shadow-sm"
-                    placeholder="Your email (optional)"
-                    value={feedbackEmail}
-                    onChange={(e) => setFeedbackEmail(e.target.value)}
-                    aria-label="Your email (optional)"
-                    disabled={feedbackLoading}
-                  />
-                  {feedbackError && (
-                    <div className="text-red-600 text-sm font-semibold text-center mb-2">
-                      {feedbackError}
-                    </div>
-                  )}
-                  <button
-                    type="submit"
-                    className="bg-gradient-to-r from-blue-600 to-blue-400 text-white rounded-xl px-6 py-3 font-bold shadow-md hover:from-blue-700 hover:to-blue-500 transition-all text-lg focus:outline-none focus:ring-2 focus:ring-blue-400 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
-                    disabled={feedbackLoading}
-                  >
-                    {feedbackLoading && (
-                      <svg
-                        className="animate-spin h-5 w-5 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+
+              <div className="px-5 sm:px-6 py-5 sm:py-6 bg-gradient-to-b from-blue-50/80 to-white">
+                <AnimatePresence mode="wait">
+                  {feedbackSubmitted ? (
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 28 }}
+                      className="flex flex-col items-center justify-center py-8 text-center"
+                    >
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 500,
+                          damping: 22,
+                          delay: 0.05,
+                        }}
+                        className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100"
                       >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
+                        <svg
+                          className="h-8 w-8 text-green-600"
+                          fill="none"
                           stroke="currentColor"
-                          strokeWidth="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8v8z"
-                        ></path>
-                      </svg>
-                    )}
-                    {feedbackLoading ? "Sending..." : "Submit Feedback"}
-                  </button>
-                </form>
-              )}
-            </div>
+                          strokeWidth="3"
+                          viewBox="0 0 24 24"
+                          aria-hidden
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      </motion.div>
+                      <p className="text-lg font-bold text-green-800">
+                        Thank you for your feedback!
+                      </p>
+                      <p className="text-sm text-green-700/80 mt-1">
+                        We appreciate you taking the time to share.
+                      </p>
+                    </motion.div>
+                  ) : (
+                    <motion.form
+                      key="form"
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.25 }}
+                      onSubmit={handleFeedbackSubmit}
+                      className="flex flex-col gap-4"
+                    >
+                      <div>
+                        <label
+                          htmlFor="feedback-text"
+                          className="sr-only"
+                        >
+                          Your feedback
+                        </label>
+                        <textarea
+                          id="feedback-text"
+                          required
+                          maxLength={maxFeedbackLength}
+                          className="border border-blue-200 rounded-xl p-3 w-full min-h-[100px] text-sm text-blue-900 placeholder:text-blue-400/70 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none bg-white"
+                          placeholder="Share your ideas, issues, or suggestions..."
+                          value={feedbackText}
+                          onChange={(e) => setFeedbackText(e.target.value)}
+                          disabled={feedbackLoading}
+                        />
+                        <div className="flex justify-end text-xs text-blue-500 mt-1">
+                          {feedbackText.length}/{maxFeedbackLength}
+                        </div>
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="feedback-email"
+                          className="sr-only"
+                        >
+                          Your email (optional)
+                        </label>
+                        <input
+                          id="feedback-email"
+                          type="email"
+                          className="border border-blue-200 rounded-xl p-3 w-full text-sm text-blue-900 placeholder:text-blue-400/70 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white"
+                          placeholder="Your email (optional)"
+                          value={feedbackEmail}
+                          onChange={(e) => setFeedbackEmail(e.target.value)}
+                          disabled={feedbackLoading}
+                        />
+                      </div>
+                      {feedbackError && (
+                        <motion.p
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          className="text-red-600 text-sm font-medium text-center"
+                        >
+                          {feedbackError}
+                        </motion.p>
+                      )}
+                      <Button
+                        type="submit"
+                        disabled={feedbackLoading}
+                        className="w-full cursor-pointer h-11 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-md"
+                      >
+                        {feedbackLoading ? (
+                          <span className="flex items-center gap-2">
+                            <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                            Sending...
+                          </span>
+                        ) : (
+                          "Submit feedback"
+                        )}
+                      </Button>
+                    </motion.form>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -1,0 +1,10 @@
+{
+  "name": "smct-portall",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm -C portal dev",
+    "build": "pnpm -C portal build",
+    "start": "pnpm -C portal start",
+    "lint": "pnpm -C portal lint"
+  }
+}
