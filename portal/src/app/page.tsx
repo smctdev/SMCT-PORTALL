@@ -290,6 +290,11 @@ const devs = [
     link: "https://chat.smctgroup.ph/direct/dev_zart",
     avatar: "/avatars/zart.jpg",
   },
+  {
+    name: "Dev_Tian",
+    link: "https://chat.smctgroup.ph/direct/dev_tian",
+    avatar: "/avatars/Dev_Tian.png",
+  },
  
 ];
 
