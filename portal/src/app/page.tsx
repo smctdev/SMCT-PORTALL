@@ -1870,14 +1870,14 @@ export default function LandingPage() {
                 </span>
                 <span className="mt-3 block h-0.5 w-full max-w-[12rem] bg-gradient-to-r from-amber-400/80 to-transparent rounded-full" />
               </div>
-              <div className="flex flex-wrap justify-center sm:justify-start gap-4">
+              <div className="flex flex-row flex-nowrap justify-center sm:justify-start gap-4 md:gap-2 pb-1 pr-2">
                 {devs.map((dev) => (
                   <a
                     key={dev.link}
                     href={dev.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex flex-col items-center gap-1.5"
+                    className="group flex flex-col items-center gap-2"
                   >
                     <div className="rounded-full p-0.5 ring-2 ring-white/20 group-hover:ring-white/50 transition-all">
                       <Avatar className="h-11 w-11">
