@@ -230,36 +230,36 @@ const featuredArticles = [
     id: 13,
     name: "STRONG MOTO CENTRUM",
     excerpt:
-      "The air hummed with a sense of anticipation as STRONG MOTO CENTRUM, INC. Biñan had its store blessing ceremony last September 25, 2024 at National Highway",
+      "Get ready to experience the future of riding! Last April 26, 2025, is the grand launching of our very own revolutionary Hatasu E-bike in PureGold Ubay, designed to redefine personal mobility. ",
     image: "/art1.png",
-    url: "https://strongmotocentrum.com/strongmotocentrum-binan-motorcycle/",
+    url: "https://strongmotocentrum.com/ride-the-revolution-e-bike-grand-launching/",
     category: "STRONG MOTO",
   },
   {
     id: 14,
     name: "DES APPLIANCE",
     excerpt:
-      "Last July 23, 2024, DES APPLIANCE PLAZA, INC. in partnership with Panasonic Philippines hosted its highly anticipated Panasonic Range Review held at Marco Polo Hotel Ortigas.",
-    image: "/art2.jpg",
-    url: "https://desappliance.com/article-panasonic-range-review/",
+      "The air buzzed with excitement as DES APPLIANCE PLAZA, INC. Initao officially opened its doors to the public on July 03, 2024 at Purok 13, National Highway, Poblacion Initao, Misamis Oriental, bringing a one-stop shop for one’s home, transportation, and business needs.",
+    image: "/art 2.png",
+    url: "https://desappliance.com/article-des-appliance-plaza-initao/",
     category: "APPLIANCE",
   },
   {
     id: 15,
     name: "DES STRONG",
     excerpt:
-      "DES STRONG MOTORS INC. Bajaj Cerilles Grand Opening last February 24, 2024 at Gov. Vicente Cerilles Street, Pagadian City.",
-    image: "/art3.png",
-    url: "https://desstrongmotors.com/article-bajaj-cerilles-three-wheelers/",
+      "With a store blessing ceremony in Isulan, Sultan Kudarat, DES STRONG MOTORS, INC. officially opened its doors last October 28, 2025, bringing dedicated support and solutions to the Isulan community.",
+    image: "/art 3.png",
+    url: "https://desstrongmotors.com/des-strong-motors-inc-isulan-your-new-destination-for-motorcycle-wheels/",
     category: "STRONG",
   },
   {
     id: 16,
     name: "HONDA DES",
     excerpt:
-      "The HONDA DES, INC. Camino Flagship actively joined the highly anticipated Zamboanga Hermosa Festival Parade of Lights which took place last October 1, 2024. This festival is a celebration of Zamboanga City’s rich cultural heritage and vibrant spirit.",
-    image: "/art4.png",
-    url: "https://hondades.com/honda-des-celebrates-hermosa-festival-with-style/",
+      "Zamboanga City — October 25, 2025 — Honda Des Inc. Zamboanga successfully hosted its  Big Bike Tambike Night, an evening dedicated to celebrating the growing big bike community and strengthening camaraderie among riders.",
+    image: "/art 4.png",
+    url: "https://hondades.com/big-bike-tambike-night-brings-riders-together-in-zamboanga/",
     category: "HONDA DES",
   },
 ];
@@ -289,6 +289,11 @@ const devs = [
     name: "Dev_zart",
     link: "https://chat.smctgroup.ph/direct/dev_zart",
     avatar: "/avatars/zart.jpg",
+  },
+  {
+    name: "Dev_Tian",
+    link: "https://chat.smctgroup.ph/direct/dev_tian",
+    avatar: "/avatars/Dev_Tian.png",
   },
  
 ];
