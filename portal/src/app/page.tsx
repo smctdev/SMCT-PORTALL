@@ -724,56 +724,61 @@ function HeaderStatusBar() {
     }) ?? "--- --, ----";
 
   return (
-    <div className="flex w-full sm:w-auto items-stretch min-h-[44px] sm:min-h-[52px] rounded-xl bg-white/10 backdrop-blur-md border border-white/25 shadow-sm overflow-hidden">
-      <div className="flex flex-1 sm:flex-initial items-center gap-2 sm:gap-3 px-2.5 sm:px-4 py-1.5 sm:py-2 min-w-0">
-        <div className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-lg bg-white/15">
-          <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" aria-hidden />
+    <div className="flex w-full sm:w-auto items-center rounded-xl bg-white/15 backdrop-blur-md border border-white/30 shadow-sm overflow-hidden">
+      {/* Time */}
+      <div className="flex flex-1 sm:flex-initial items-center gap-2.5 px-3 sm:px-4 py-2.5 min-w-0">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/20">
+          <Clock className="h-4 w-4 text-white" aria-hidden />
         </div>
-        <div className="flex flex-col items-start sm:items-end text-left sm:text-right min-w-0 flex-1">
-          <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-blue-100 font-semibold leading-none">
+        <div className="flex flex-col min-w-0">
+          <span className="text-[10px] uppercase tracking-wider text-blue-100 font-semibold leading-none">
             <span className="sm:hidden">PST</span>
             <span className="hidden sm:inline">Philippine Standard Time</span>
           </span>
           <time
             dateTime={now?.toISOString()}
             suppressHydrationWarning
-            className="text-base sm:text-xl font-bold text-white tabular-nums leading-tight"
+            className="text-lg sm:text-xl font-bold text-white tabular-nums leading-tight mt-0.5"
           >
             <span className="sm:hidden">{timeShort}</span>
             <span className="hidden sm:inline">{time}</span>
           </time>
-          <span className="text-[10px] sm:text-xs text-blue-100 font-medium truncate w-full">
+          <span className="text-[11px] sm:text-xs text-blue-100/90 font-medium truncate mt-0.5">
             {day}, {date}
           </span>
         </div>
       </div>
 
-      <div className="w-px self-stretch bg-white/25 shrink-0" aria-hidden />
+      <div className="w-px h-10 bg-white/30 shrink-0" aria-hidden />
 
-      <div className="flex shrink-0 items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2">
+      {/* Weather */}
+      <div className="flex items-center gap-2.5 px-3 sm:px-4 py-2.5 shrink-0">
         {weather ? (
           <>
             <img
               src={weather.icon}
               alt={weather.condition}
-              className="w-7 h-7 sm:w-8 sm:h-8 shrink-0"
+              className="w-8 h-8 shrink-0"
             />
             <div className="flex flex-col min-w-0">
-              <span className="hidden sm:block text-[10px] uppercase tracking-wider text-blue-100 font-semibold leading-none">
+              <span className="text-[10px] uppercase tracking-wider text-blue-100 font-semibold leading-none">
                 Tagbilaran
               </span>
-              <span className="text-xs sm:text-sm font-bold text-white leading-tight whitespace-nowrap">
+              <span className="text-sm sm:text-base font-bold text-white leading-tight mt-0.5">
                 {weather.temp}
               </span>
-              <span className="hidden sm:block text-[11px] text-blue-100 truncate max-w-[120px]">
+              <span className="text-[11px] text-blue-100/90 truncate max-w-[100px] sm:max-w-[120px] mt-0.5 hidden sm:block">
                 {weather.condition}
               </span>
             </div>
           </>
         ) : (
-          <span className="text-[10px] sm:text-xs text-blue-100 font-medium pr-1">
-            N/A
-          </span>
+          <div className="flex flex-col">
+            <span className="text-[10px] uppercase tracking-wider text-blue-100 font-semibold">
+              Weather
+            </span>
+            <span className="text-xs text-blue-100/80 mt-0.5">Unavailable</span>
+          </div>
         )}
       </div>
     </div>
@@ -937,36 +942,43 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gray-200 flex flex-col overflow-x-hidden">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 shadow-md border-b border-blue-400/30">
-        <div className="w-full px-3 py-2 sm:px-6 lg:px-8 sm:py-0 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:h-[72px]">
-          <motion.div
-            className="flex items-center gap-2.5 sm:gap-4 min-w-0 w-full sm:w-auto sm:max-w-[min(100%,28rem)] rounded-xl bg-white/10 backdrop-blur-md border border-white/25 shadow-sm px-2.5 py-2 sm:px-4 sm:py-2.5"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Image
-              src="/smct.png"
-              alt="SMCT Group Logo"
-              width={80}
-              height={80}
-              className="h-10 w-10 sm:h-14 sm:w-14 shrink-0 object-contain"
-              priority
-            />
-            <div className="min-w-0 flex-1 text-left">
-              <h1 className="text-sm sm:text-xl lg:text-2xl font-bold text-white leading-tight">
-                <span className="sm:hidden">SMCT App Center</span>
-                <span className="hidden sm:inline truncate">
+      <header className="sticky top-0 z-50 bg-gradient-to-r from-blue-700 via-blue-600 to-blue-700 shadow-lg border-b border-blue-500/40">
+        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-3 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:py-3.5">
+            <motion.a
+              href="#"
+              className="flex items-center gap-3 sm:gap-4 min-w-0 group"
+              initial={{ opacity: 0, x: -16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <Image
+                src="/smct.png"
+                alt="SMCT Group Logo"
+                width={80}
+                height={80}
+                className="h-11 w-11 sm:h-12 sm:w-12 shrink-0 object-contain drop-shadow-md transition-transform group-hover:scale-105"
+                priority
+              />
+              <div className="min-w-0 text-left border-l border-white/25 pl-3 sm:pl-4">
+                <h1 className="text-base sm:text-lg lg:text-xl font-bold text-white leading-tight tracking-tight">
                   SMCT Application Center
-                </span>
-              </h1>
-              <p className="hidden sm:block text-xs text-blue-100 font-medium truncate">
-                Your SMCT App Library
-              </p>
-            </div>
-          </motion.div>
+                </h1>
+                <p className="text-[11px] sm:text-xs text-blue-100/90 font-medium mt-0.5">
+                  Your SMCT App Library
+                </p>
+              </div>
+            </motion.a>
 
-          <HeaderStatusBar />
+            <motion.div
+              className="w-full sm:w-auto shrink-0"
+              initial={{ opacity: 0, x: 16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+            >
+              <HeaderStatusBar />
+            </motion.div>
+          </div>
         </div>
       </header>
 
